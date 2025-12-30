@@ -1,0 +1,176 @@
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { budgets, categories, transactions } from "@/lib/data";
+import { formatCurrency, formatDate } from "@/lib/utils";
+import { ArrowUpRight, DollarSign, MoreVertical, TrendingUp, Wallet } from "lucide-react";
+import Link from "next/link";
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+
+export default function Dashboard() {
+  const totalIncome = transactions
+    .filter((t) => t.type === 'income')
+    .reduce((acc, t) => acc + t.amount, 0);
+  const totalExpenses = transactions
+    .filter((t) => t.type === 'expense')
+    .reduce((acc, t) => acc + t.amount, 0);
+  const netBalance = totalIncome - totalExpenses;
+
+  const spendingByCategory = categories
+    .filter(c => c.name !== 'Salary' && c.name !== 'Savings')
+    .map(category => {
+      const total = transactions
+        .filter(t => t.category === category.name && t.type === 'expense')
+        .reduce((acc, t) => acc + t.amount, 0);
+      return { name: category.name, total: total / 100 };
+    }).sort((a, b) => b.total - a.total);
+
+  const budgetWithSpending = budgets.map(budget => {
+    const spent = transactions
+      .filter(t => t.category === budget.categoryName && t.type === 'expense')
+      .reduce((acc, t) => acc + t.amount, 0);
+    const progress = (spent / budget.amount) * 100;
+    return { ...budget, spent, progress };
+  });
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Income</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatCurrency(totalIncome)}</div>
+            <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
+            <Wallet className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatCurrency(totalExpenses)}</div>
+            <p className="text-xs text-muted-foreground">+180.1% from last month</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Net Balance</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className={`text-2xl font-bold ${netBalance > 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {formatCurrency(netBalance)}
+            </div>
+            <p className="text-xs text-muted-foreground">This month's performance</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="col-span-4">
+          <CardHeader>
+            <CardTitle>Spending Overview</CardTitle>
+          </CardHeader>
+          <CardContent className="pl-2">
+            <ResponsiveContainer width="100%" height={350}>
+              <BarChart data={spendingByCategory}>
+                <XAxis
+                  dataKey="name"
+                  stroke="#888888"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  stroke="#888888"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(value) => `$${value}`}
+                />
+                <Bar dataKey="total" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+        <Card className="col-span-4 lg:col-span-3">
+          <CardHeader>
+            <CardTitle>Recent Transactions</CardTitle>
+            <CardDescription>
+              You made {transactions.filter(t => t.type === 'expense').length} transactions this month.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Description</TableHead>
+                  <TableHead className="text-right">Amount</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {transactions.slice(0, 5).map((transaction) => (
+                  <TableRow key={transaction.id}>
+                    <TableCell>
+                      <div className="font-medium">{transaction.description}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {formatDate(new Date(transaction.date))}
+                      </div>
+                    </TableCell>
+                    <TableCell className={`text-right ${transaction.type === 'income' ? 'text-green-500' : ''}`}>
+                      {transaction.type === 'income' ? '+' : '-'}
+                      {formatCurrency(transaction.amount)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+             <Button asChild variant="outline" className="mt-4 w-full">
+              <Link href="/transactions">View All Transactions</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Budget Progress</CardTitle>
+          <CardDescription>Your monthly budget status.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-6">
+          {budgetWithSpending.map(budget => (
+             <div key={budget.id} className="grid grid-cols-[1fr_100px_1fr] items-center gap-4">
+               <span className="font-medium">{budget.categoryName}</span>
+               <div className="text-right text-sm text-muted-foreground">
+                 {formatCurrency(budget.spent)} / {formatCurrency(budget.amount)}
+               </div>
+               <Progress value={budget.progress} aria-label={`${budget.categoryName} budget progress`} />
+             </div>
+          ))}
+           <Button asChild variant="default" className="mt-4">
+              <Link href="/budgets">Manage Budgets</Link>
+            </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
