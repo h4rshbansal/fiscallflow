@@ -1,44 +1,37 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PiggyBank } from "lucide-react";
-import { getAuth, signInAnonymously, type Auth } from "firebase/auth";
-import { initializeFirebase } from "@/firebase";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 export default function AuthPage() {
   const [name, setName] = useState("");
+  const [dob, setDob] = useState<Date | undefined>();
   const [error, setError] = useState("");
-  const [auth, setAuth] = useState<Auth | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const { auth } = initializeFirebase();
-    setAuth(auth);
-  }, []);
-
-  const handleLogin = async () => {
-    if (!auth) {
-      setError("Firebase is not initialized. Please try again in a moment.");
-      return;
-    }
+  const handleLogin = () => {
     if (!name.trim()) {
       setError("Please enter your name.");
       return;
     }
-    setError("");
-    try {
-      await signInAnonymously(auth);
-      localStorage.setItem("userName", name);
-      router.push("/dashboard");
-    } catch (error) {
-      console.error("Anonymous sign-in failed", error);
-      setError("Login failed. Please try again.");
+    if (!dob) {
+      setError("Please enter your date of birth.");
+      return;
     }
+    setError("");
+    localStorage.setItem("userName", name);
+    localStorage.setItem("userDob", dob.toISOString());
+    router.push("/dashboard");
   };
 
   return (
@@ -50,7 +43,7 @@ export default function AuthPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Welcome!</CardTitle>
-          <CardDescription>Enter your name to get started.</CardDescription>
+          <CardDescription>Enter your details to get started.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -61,12 +54,39 @@ export default function AuthPage() {
                 placeholder="Enter your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
               />
             </div>
+             <div className="space-y-2">
+              <Label htmlFor="dob">Date of Birth</Label>
+               <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !dob && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {dob ? format(dob, "PPP") : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={dob}
+                        onSelect={setDob}
+                        initialFocus
+                        captionLayout="dropdown-nav"
+                        fromYear={1960}
+                        toYear={new Date().getFullYear()}
+                      />
+                    </PopoverContent>
+                  </Popover>
+            </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button onClick={handleLogin} className="w-full" disabled={!auth}>
-              {auth ? 'Continue' : 'Initializing...'}
+            <Button onClick={handleLogin} className="w-full">
+              Continue
             </Button>
           </div>
         </CardContent>
