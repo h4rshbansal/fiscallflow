@@ -40,7 +40,7 @@ const prompt = ai.definePrompt({
   output: {schema: BudgetSetupAssistantOutputSchema},
   prompt: `You are a personal finance advisor helping a new user set up their initial monthly budget.
 
-  Based on the user's income of ${{income}} and region of {{{region}}}, provide a personalized budget recommendation.
+  Based on the user's income of {{{income}}} and region of {{{region}}}, provide a personalized budget recommendation.
 
   Consider typical spending habits for the region and suggest amounts for the following categories:
   - Housing
