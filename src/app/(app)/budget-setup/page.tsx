@@ -13,64 +13,34 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Wand2 } from 'lucide-react';
-import { budgetSetupAssistant } from '@/ai/flows/budget-setup-assistant';
 import { useToast } from '@/hooks/use-toast';
-import { budgets as initialBudgets, transactions } from '@/lib/data';
+import { budgets as initialBudgets, categories as initialCategories } from '@/lib/data';
+import { formatCurrency } from '@/lib/utils';
 
 export default function BudgetSetupPage() {
-  const [income, setIncome] = useState('');
-  const [region, setRegion] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [recommendedBudgets, setRecommendedBudgets] = useState<Record<string, number> | null>(null);
+  const [step, setStep] = useState(1);
+  const [salary, setSalary] = useState('');
+  const [budgets, setBudgets] = useState<Record<string, string>>(
+    Object.fromEntries(initialCategories.filter(c => c.name !== 'Salary').map(c => [c.name, '0']))
+  );
   const router = useRouter();
   const { toast } = useToast();
 
-  const handleGetRecommendations = async () => {
-    if (!income || !region) {
-        toast({
-            variant: "destructive",
-            title: "Missing Information",
-            description: "Please enter your income and region.",
-        });
-        return;
-    }
-    setIsLoading(true);
-    setRecommendedBudgets(null);
-    try {
-      const result = await budgetSetupAssistant({
-        income: Number(income),
-        region,
-      });
-      setRecommendedBudgets(result.recommendedBudget);
-      toast({
-        title: "AI Recommendations Generated",
-        description: "Here is a starting budget for you.",
-      });
-    } catch (error) {
-      console.error('Failed to get AI recommendations:', error);
+  const totalAllocated = Object.values(budgets).reduce((sum, amount) => sum + Number(amount), 0);
+  const remainingSalary = Number(salary) - totalAllocated;
+
+  const handleSaveBudget = () => {
+    if (remainingSalary < 0) {
       toast({
         variant: 'destructive',
-        title: 'Error',
-        description: 'Could not fetch AI recommendations. Please try again.',
+        title: 'Overbudget!',
+        description: 'Your allocated budget exceeds your salary. Please adjust the amounts.',
       });
-    } finally {
-      setIsLoading(false);
+      return;
     }
-  };
-  
-  const handleSaveBudget = () => {
-    // Here you would typically save the budget to your backend.
-    // For now, we'll just mark setup as complete and redirect.
+    // In a real app, you'd save `budgets` to a database.
+    console.log("Saving budgets:", budgets);
     localStorage.setItem('hasCompletedSetup', 'true');
-    if (recommendedBudgets) {
-      const newBudgets = initialBudgets.map(b => ({
-        ...b,
-        amount: (recommendedBudgets[b.categoryName] || b.amount / 100) * 100,
-      }));
-      // In a real app, you'd save `newBudgets`
-      console.log("Saving budgets:", newBudgets);
-    }
     toast({
       title: "Budget Saved!",
       description: "Your initial budget has been set up.",
@@ -78,61 +48,84 @@ export default function BudgetSetupPage() {
     router.push('/dashboard');
   };
 
+  const handleBudgetChange = (category: string, value: string) => {
+    setBudgets(prev => ({ ...prev, [category]: value }));
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-2xl">
         <CardHeader>
-          <CardTitle>Let's set up your budget</CardTitle>
+          <CardTitle>Set up your budget</CardTitle>
           <CardDescription>
-            Tell us your monthly income and region, and our AI assistant will create a personalized budget to get you started.
+            {step === 1 ? "First, let's start with your monthly salary." : "Now, allocate your salary across your spending categories."}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="income">Monthly Income (USD)</Label>
-              <Input
-                id="income"
-                type="number"
-                placeholder="e.g., 5000"
-                value={income}
-                onChange={(e) => setIncome(e.target.value)}
-              />
+        <CardContent>
+          {step === 1 && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="salary">Monthly Salary (USD)</Label>
+                <Input
+                  id="salary"
+                  type="number"
+                  placeholder="e.g., 5000"
+                  value={salary}
+                  onChange={(e) => setSalary(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="region">Region</Label>
-              <Input
-                id="region"
-                placeholder="e.g., California, USA"
-                value={region}
-                onChange={(e) => setRegion(e.target.value)}
-              />
-            </div>
-          </div>
-           <Button onClick={handleGetRecommendations} disabled={isLoading} className="w-full sm:w-auto">
-            <Wand2 className="mr-2 h-4 w-4" />
-            {isLoading ? 'Analyzing...' : 'Generate AI Budget'}
-          </Button>
+          )}
 
-          {recommendedBudgets && (
-             <div className="space-y-4 pt-4">
-                <h3 className="text-lg font-medium">Recommended Budget</h3>
-                 <div className="grid grid-cols-2 gap-4 rounded-lg border p-4 md:grid-cols-3">
-                    {Object.entries(recommendedBudgets).map(([category, amount]) => (
-                        <div key={category}>
-                            <p className="text-sm text-muted-foreground">{category}</p>
-                            <p className="text-lg font-semibold">${amount.toFixed(2)}</p>
-                        </div>
-                    ))}
-                 </div>
-             </div>
+          {step === 2 && (
+            <div className="space-y-4">
+                <div className="rounded-lg border bg-card-foreground/5 p-4">
+                    <div className="flex justify-between text-lg font-semibold">
+                        <span>Total Salary:</span>
+                        <span>{formatCurrency(Number(salary) * 100)}</span>
+                    </div>
+                    <div className="flex justify-between text-base text-muted-foreground">
+                        <span>Allocated:</span>
+                        <span>{formatCurrency(totalAllocated * 100)}</span>
+                    </div>
+                     <div className={`flex justify-between text-base font-medium ${remainingSalary < 0 ? 'text-destructive' : 'text-green-600'}`}>
+                        <span>Remaining:</span>
+                        <span>{formatCurrency(remainingSalary * 100)}</span>
+                    </div>
+                </div>
+
+              <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                {Object.keys(budgets).map(category => (
+                  <div key={category} className="space-y-2">
+                    <Label htmlFor={`budget-${category}`}>{category}</Label>
+                    <Input
+                      id={`budget-${category}`}
+                      type="number"
+                      placeholder="0.00"
+                      value={budgets[category]}
+                      onChange={(e) => handleBudgetChange(category, e.target.value)}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </CardContent>
-        <CardFooter>
-            <Button onClick={handleSaveBudget} className="w-full" disabled={!recommendedBudgets}>
+        <CardFooter className="flex justify-end gap-4">
+          {step === 2 && (
+             <Button variant="outline" onClick={() => setStep(1)}>
+                Back
+             </Button>
+          )}
+          {step === 1 ? (
+             <Button onClick={() => setStep(2)} disabled={!salary || Number(salary) <= 0}>
+                Next
+             </Button>
+          ) : (
+            <Button onClick={handleSaveBudget}>
                 Save Budget and Continue
             </Button>
+          )}
         </CardFooter>
       </Card>
     </div>

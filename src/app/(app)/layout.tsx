@@ -24,6 +24,11 @@ export default function AppLayout({
 
   useEffect(() => {
     setIsClient(true);
+    const hasUserName = localStorage.getItem('userName');
+    if (!hasUserName) {
+      router.push('/');
+      return;
+    }
     const hasCompletedSetup = localStorage.getItem('hasCompletedSetup');
     if (!hasCompletedSetup) {
       router.push('/budget-setup');

@@ -9,7 +9,10 @@ import { formatCurrency, formatDate } from "@/lib/utils"
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 
-export const columns: ColumnDef<Transaction>[] = [
+export const getColumns = (
+    onEdit: (transaction: Transaction) => void,
+    onDelete: (id: string) => void
+  ): ColumnDef<Transaction>[] => [
   {
     accessorKey: "date",
     header: ({ column }) => {
@@ -34,7 +37,7 @@ export const columns: ColumnDef<Transaction>[] = [
     header: "Category",
     cell: ({ row }) => {
       const category = categories.find(c => c.name === row.original.category);
-      if (!category) return null;
+      if (!category) return <Badge variant="outline">Uncategorized</Badge>;
       return (
         <Badge variant="outline" style={{ borderColor: category.color, color: category.color }}>
           {category.name}
@@ -87,13 +90,17 @@ export const columns: ColumnDef<Transaction>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(transaction.id)}
+              onClick={() => onEdit(transaction)}
             >
-              Copy transaction ID
+              Edit transaction
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit transaction</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive focus:text-destructive focus:bg-destructive/10">Delete transaction</DropdownMenuItem>
+            <DropdownMenuItem 
+              className="text-destructive focus:text-destructive focus:bg-destructive/10"
+              onClick={() => onDelete(transaction.id)}
+            >
+              Delete transaction
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

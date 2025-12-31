@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/table";
 import { budgets, categories, transactions } from "@/lib/data";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { ArrowUpRight, DollarSign, MoreVertical, TrendingUp, Wallet } from "lucide-react";
+import { DollarSign, TrendingUp, Wallet } from "lucide-react";
 import Link from "next/link";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
