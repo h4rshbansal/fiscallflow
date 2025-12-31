@@ -57,10 +57,11 @@ export default function AuthPage() {
               />
             </div>
              <div className="space-y-2">
-              <Label htmlFor="dob">Date of Birth</Label>
+              <Label>Date of Birth</Label>
                <Popover>
                     <PopoverTrigger asChild>
                       <Button
+                        id="dob"
                         variant={"outline"}
                         className={cn(
                           "w-full justify-start text-left font-normal",
