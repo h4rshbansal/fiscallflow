@@ -1,26 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PiggyBank } from "lucide-react";
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { getAuth, signInAnonymously, type Auth } from "firebase/auth";
+import { initializeFirebase } from "@/firebase";
 
 export default function AuthPage() {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
+  const [auth, setAuth] = useState<Auth | null>(null);
   const router = useRouter();
 
+  useEffect(() => {
+    const { auth } = initializeFirebase();
+    setAuth(auth);
+  }, []);
+
   const handleLogin = async () => {
+    if (!auth) {
+      setError("Firebase is not initialized. Please try again in a moment.");
+      return;
+    }
     if (!name.trim()) {
       setError("Please enter your name.");
       return;
     }
     setError("");
-    const auth = getAuth();
     try {
       await signInAnonymously(auth);
       localStorage.setItem("userName", name);
@@ -55,8 +65,8 @@ export default function AuthPage() {
               />
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button onClick={handleLogin} className="w-full">
-              Continue
+            <Button onClick={handleLogin} className="w-full" disabled={!auth}>
+              {auth ? 'Continue' : 'Initializing...'}
             </Button>
           </div>
         </CardContent>
