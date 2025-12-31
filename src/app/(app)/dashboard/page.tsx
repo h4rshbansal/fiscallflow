@@ -52,7 +52,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Income</CardTitle>
@@ -122,30 +122,35 @@ export default function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Description</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {transactions.slice(0, 5).map((transaction) => (
-                  <TableRow key={transaction.id}>
-                    <TableCell>
-                      <div className="font-medium">{transaction.description}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {formatDate(new Date(transaction.date))}
-                      </div>
-                    </TableCell>
-                    <TableCell className={`text-right ${transaction.type === 'income' ? 'text-green-500' : ''}`}>
-                      {transaction.type === 'income' ? '+' : '-'}
-                      {formatCurrency(transaction.amount)}
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Description</TableHead>
+                    <TableHead className="text-right">Amount</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {transactions.slice(0, 5).map((transaction) => (
+                    <TableRow key={transaction.id}>
+                      <TableCell>
+                        <div className="font-medium">{transaction.description}</div>
+                        <div className="text-sm text-muted-foreground md:hidden">
+                          {formatDate(new Date(transaction.date))}
+                        </div>
+                         <div className="hidden text-sm text-muted-foreground md:block">
+                          {formatDate(new Date(transaction.date))}
+                        </div>
+                      </TableCell>
+                      <TableCell className={`text-right ${transaction.type === 'income' ? 'text-green-500' : ''}`}>
+                        {transaction.type === 'income' ? '+' : '-'}
+                        {formatCurrency(transaction.amount)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
              <Button asChild variant="outline" className="mt-4 w-full">
               <Link href="/transactions">View All Transactions</Link>
             </Button>
@@ -160,9 +165,9 @@ export default function Dashboard() {
         </CardHeader>
         <CardContent className="grid gap-6">
           {budgetWithSpending.map(budget => (
-             <div key={budget.id} className="grid grid-cols-[1fr_100px_1fr] items-center gap-4">
+             <div key={budget.id} className="grid grid-cols-[1fr_auto] items-center gap-4 md:grid-cols-[1fr_100px_1fr]">
                <span className="font-medium">{budget.categoryName}</span>
-               <div className="text-right text-sm text-muted-foreground">
+               <div className="hidden text-right text-sm text-muted-foreground md:block">
                  {formatCurrency(budget.spent)} / {formatCurrency(budget.amount)}
                </div>
                <Progress value={budget.progress} aria-label={`${budget.categoryName} budget progress`} />
