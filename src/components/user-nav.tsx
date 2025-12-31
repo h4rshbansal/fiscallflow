@@ -32,7 +32,7 @@ export function UserNav() {
 
   const handleLogout = () => {
     localStorage.removeItem("userName");
-    localStorage.removeItem("userDob");
+    localStorage.removeItem("userAge");
     router.push("/");
   };
 
