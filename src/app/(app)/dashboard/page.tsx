@@ -52,7 +52,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Income</CardTitle>
@@ -173,7 +173,7 @@ export default function Dashboard() {
                <Progress value={budget.progress} aria-label={`${budget.categoryName} budget progress`} />
              </div>
           ))}
-           <Button asChild variant="default" className="mt-4">
+           <Button asChild variant="default" className="mt-4 w-full sm:w-auto">
               <Link href="/budgets">Manage Budgets</Link>
             </Button>
         </CardContent>

@@ -1,3 +1,5 @@
+'use client';
+
 import { Logo } from '@/components/logo';
 import { MainNav } from '@/components/main-nav';
 import { UserNav } from '@/components/user-nav';
@@ -9,12 +11,29 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const hasCompletedSetup = localStorage.getItem('hasCompletedSetup');
+    if (!hasCompletedSetup) {
+      router.push('/budget-setup');
+    }
+  }, [router]);
+
+  if (!isClient) {
+    return null; // or a loading spinner
+  }
+
   return (
     <SidebarProvider>
       <Sidebar>
