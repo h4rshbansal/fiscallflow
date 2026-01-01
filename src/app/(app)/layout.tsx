@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Logo } from '@/components/logo';
@@ -15,6 +16,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { BottomNav } from '@/components/bottom-nav';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { DashboardSkeleton } from './dashboard/components/dashboard-skeleton';
 
 export default function AppLayout({
   children,
@@ -23,11 +25,10 @@ export default function AppLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    setIsClient(true);
     const hasUserName = localStorage.getItem('userName');
     if (!hasUserName) {
       router.push('/auth');
@@ -36,12 +37,21 @@ export default function AppLayout({
     const hasCompletedSetup = localStorage.getItem('hasCompletedSetup');
     if (!hasCompletedSetup && pathname !== '/budget-setup') {
       router.push('/budget-setup');
+      return;
     }
+    // Simulate a brief loading period to allow data to populate and show skeleton
+    const timer = setTimeout(() => {
+        setIsLoading(false);
+    }, 500); 
+    
+    return () => clearTimeout(timer);
+
   }, [router, pathname]);
 
-  if (!isClient) {
-    return null; // or a loading spinner
+  if (isLoading) {
+    return <DashboardSkeleton />;
   }
+
 
   return (
     <SidebarProvider>
