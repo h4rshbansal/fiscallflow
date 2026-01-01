@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -5,17 +6,72 @@ import { transactions as initialTransactions } from "@/lib/data";
 import type { Transaction } from "@/lib/types";
 import { DataTable } from "./components/data-table";
 import { getColumns } from "./components/columns";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { AddTransactionSheet } from "./components/add-transaction-sheet";
 import { useToast } from "@/hooks/use-toast";
-import { DollarSign, Wallet, TrendingUp } from "lucide-react";
-import { formatCurrency } from "@/lib/utils";
+import { DollarSign, Wallet, TrendingUp, MoreHorizontal } from "lucide-react";
+import { formatCurrency, formatDate } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Badge } from "@/components/ui/badge";
+import { categories } from "@/lib/data";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
+const TransactionCard = ({ transaction, onEdit, onDelete }: { transaction: Transaction, onEdit: (t: Transaction) => void, onDelete: (id: string) => void }) => {
+  const category = categories.find(c => c.name === transaction.category);
+  return (
+    <Card>
+      <CardContent className="p-4">
+        <div className="flex justify-between items-start">
+          <div className="flex-1 space-y-1">
+            <p className="font-medium">{transaction.description}</p>
+            <p className="text-sm text-muted-foreground">{formatDate(new Date(transaction.date))}</p>
+             {category && (
+                <Badge variant="outline" style={{ borderColor: category.color, color: category.color }} className="w-min">
+                  {category.name}
+                </Badge>
+              )}
+          </div>
+          <div className="flex flex-col items-end">
+             <p className={`font-medium text-lg ${transaction.type === 'income' ? 'text-emerald-500' : 'text-destructive'}`}>
+                {transaction.type === 'income' ? '+' : '-'}
+                {formatCurrency(transaction.amount)}
+            </p>
+             <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0 mt-1">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem onClick={() => onEdit(transaction)}>
+                  Edit transaction
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  className="text-destructive focus:text-destructive focus:bg-destructive/10"
+                  onClick={() => onDelete(transaction.id)}
+                >
+                  Delete transaction
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const handleAddTransaction = (newTransaction: Omit<Transaction, 'id'>) => {
     const transactionWithId = { ...newTransaction, id: `txn-${Date.now()}`};
@@ -117,9 +173,24 @@ export default function TransactionsPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <DataTable columns={columns} data={transactions} />
+          {isMobile ? (
+             <div className="space-y-4">
+              {transactions.map(t => (
+                <TransactionCard key={t.id} transaction={t} onEdit={openEditSheet} onDelete={handleDeleteTransaction} />
+              ))}
+              {transactions.length === 0 && (
+                <div className="text-center text-muted-foreground py-12">
+                    <p>No transactions yet.</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <DataTable columns={columns} data={transactions} />
+          )}
         </CardContent>
       </Card>
     </div>
   )
 }
+
+    
