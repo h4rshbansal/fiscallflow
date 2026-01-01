@@ -18,6 +18,7 @@ export default function BudgetsPage() {
   const [recommendations, setRecommendations] = useState<Record<string, string> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const [isBudgetsDataLoaded, setIsBudgetsDataLoaded] = useState(false);
 
   useEffect(() => {
     const savedBudgets = localStorage.getItem('budgets');
@@ -26,6 +27,7 @@ export default function BudgetsPage() {
     } else {
       setBudgets(initialBudgets);
     }
+    setIsBudgetsDataLoaded(true);
     
     const savedTransactions = localStorage.getItem('transactions');
     if (savedTransactions) {
@@ -36,10 +38,10 @@ export default function BudgetsPage() {
   }, []);
 
   useEffect(() => {
-    if(budgets.length > 0) {
+    if(isBudgetsDataLoaded) {
       localStorage.setItem('budgets', JSON.stringify(budgets));
     }
-  }, [budgets]);
+  }, [budgets, isBudgetsDataLoaded]);
 
 
   const handleBudgetChange = (categoryName: string, newAmount: number) => {

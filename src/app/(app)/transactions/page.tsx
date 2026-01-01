@@ -85,6 +85,7 @@ export default function TransactionsPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { toast } = useToast();
   const isMobile = useIsMobile();
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
     const savedTransactions = localStorage.getItem('transactions');
@@ -93,15 +94,14 @@ export default function TransactionsPage() {
     } else {
       setTransactions(initialTransactions);
     }
+    setIsDataLoaded(true);
   }, []);
 
   useEffect(() => {
-    // Only save to localStorage if transactions state is not the initial empty array,
-    // to prevent overwriting on first load before data is populated.
-    if (transactions.length > 0 || localStorage.getItem('transactions')) {
+    if (isDataLoaded) {
       localStorage.setItem('transactions', JSON.stringify(transactions));
     }
-  }, [transactions]);
+  }, [transactions, isDataLoaded]);
 
   const handleAddTransaction = (newTransaction: Omit<Transaction, 'id'>) => {
     const transactionWithId = { ...newTransaction, id: `txn-${Date.now()}`};
@@ -156,7 +156,7 @@ export default function TransactionsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+       <div className="grid grid-cols-2 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-xs sm:text-sm font-medium">Total Income</CardTitle>

@@ -30,6 +30,8 @@ export default function GoalsPage() {
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
   const { toast } = useToast();
   const { t } = useLanguage();
+  const [isGoalsDataLoaded, setIsGoalsDataLoaded] = useState(false);
+  const [isTransactionsDataLoaded, setIsTransactionsDataLoaded] = useState(false);
 
   useEffect(() => {
     const savedGoals = localStorage.getItem('goals');
@@ -38,25 +40,26 @@ export default function GoalsPage() {
     } else {
       setGoals(initialGoals);
     }
+    setIsGoalsDataLoaded(true);
     
     const savedTransactions = localStorage.getItem('transactions');
     if (savedTransactions) {
       setTransactions(JSON.parse(savedTransactions));
     }
+    setIsTransactionsDataLoaded(true);
   }, []);
 
   useEffect(() => {
-    // We don't want to save the initial empty array
-    if (goals.length > 0 || localStorage.getItem('goals')) {
+    if (isGoalsDataLoaded) {
        localStorage.setItem('goals', JSON.stringify(goals));
     }
-  }, [goals]);
+  }, [goals, isGoalsDataLoaded]);
 
   useEffect(() => {
-    if (transactions.length > 0 || localStorage.getItem('transactions')) {
+    if (isTransactionsDataLoaded) {
        localStorage.setItem('transactions', JSON.stringify(transactions));
     }
-  }, [transactions]);
+  }, [transactions, isTransactionsDataLoaded]);
 
   const handleAddGoal = (newGoal: Omit<Goal, 'id' | 'currentAmount' | 'status'>) => {
     const goalWithId: Goal = {

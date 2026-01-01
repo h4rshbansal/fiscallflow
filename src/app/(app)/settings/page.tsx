@@ -19,25 +19,25 @@ export default function SettingsPage() {
   const [newCategoryName, setNewCategoryName] = useState("");
   const { toast } = useToast();
   const { language, setLanguage, t } = useLanguage();
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
     const savedCategories = localStorage.getItem('categories');
     if (savedCategories) {
-      // De-serialize the categories, converting icon strings back to components
       const parsedCategories = JSON.parse(savedCategories).map((cat: any) => ({...cat, icon: GraduationCap}));
       setCategories(parsedCategories);
     } else {
       setCategories(initialCategories.filter(c => c.type !== 'income' && c.type !== 'saving'));
     }
+    setIsDataLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (categories.length > 0) {
-      // We need to serialize the icon component to a string
+    if (isDataLoaded) {
       const categoriesToSave = categories.map(({ icon, ...rest }) => ({...rest, icon: 'GraduationCap' }));
       localStorage.setItem('categories', JSON.stringify(categoriesToSave));
     }
-  }, [categories]);
+  }, [categories, isDataLoaded]);
 
   const handleAddCategory = () => {
     if (!newCategoryName.trim()) {
