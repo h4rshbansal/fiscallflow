@@ -48,7 +48,6 @@ export default function BudgetSetupPage() {
       type: 'income',
     };
     
-    // For now, we store in localStorage.
     const existingTransactions = JSON.parse(localStorage.getItem('transactions') || '[]');
     localStorage.setItem('transactions', JSON.stringify([newTransaction, ...existingTransactions]));
     
@@ -87,7 +86,7 @@ export default function BudgetSetupPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle>Set up your budget</CardTitle>
           <CardDescription>
@@ -121,15 +120,15 @@ export default function BudgetSetupPage() {
                         <span>Allocated:</span>
                         <span>{formatCurrency(totalAllocated * 100)}</span>
                     </div>
-                     <div className={`flex justify-between text-base font-medium ${remainingSalary < 0 ? 'text-destructive' : 'text-red-600'}`}>
+                     <div className={`flex justify-between text-base font-medium ${remainingSalary < 0 ? 'text-destructive' : 'text-green-600'}`}>
                         <span>Remaining:</span>
                         <span>{formatCurrency(remainingSalary * 100)}</span>
                     </div>
                 </div>
 
-              <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+              <div className="flex flex-wrap gap-4">
                 {Object.keys(budgets).map(category => (
-                  <div key={category} className="space-y-2">
+                  <div key={category} className="flex-grow space-y-2" style={{minWidth: 'calc(50% - 0.5rem)'}}>
                     <Label htmlFor={`budget-${category}`}>{category}</Label>
                     <Input
                       id={`budget-${category}`}
