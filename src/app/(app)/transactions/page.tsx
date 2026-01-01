@@ -5,14 +5,11 @@
 import { useState, useEffect } from "react";
 import { transactions as initialTransactions } from "@/lib/data";
 import type { Transaction, Category } from "@/lib/types";
-import { DataTable } from "./components/data-table";
-import { getColumns } from "./components/columns";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { AddTransactionSheet } from "./components/add-transaction-sheet";
 import { useToast } from "@/hooks/use-toast";
 import { DollarSign, Wallet, TrendingUp, MoreHorizontal, GraduationCap, PiggyBank } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { Badge } from "@/components/ui/badge";
 import { categories as initialCategories } from "@/lib/data";
 import { Button } from "@/components/ui/button";
@@ -84,7 +81,6 @@ export default function TransactionsPage() {
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { toast } = useToast();
-  const isMobile = useIsMobile();
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
@@ -140,8 +136,6 @@ export default function TransactionsPage() {
       setEditingTransaction(null);
     }
   }
-
-  const columns = getColumns(openEditSheet, handleDeleteTransaction);
 
   const totalIncome = transactions
     .filter((t) => t.type === 'income')
@@ -215,20 +209,16 @@ export default function TransactionsPage() {
           </div>
         </CardHeader>
         <CardContent>
-          {isMobile ? (
-             <div className="space-y-2">
-              {transactions.map(t => (
-                <TransactionCard key={t.id} transaction={t} onEdit={openEditSheet} onDelete={handleDeleteTransaction} />
-              ))}
-              {transactions.length === 0 && (
-                <div className="text-center text-muted-foreground py-12">
-                    <p>No transactions yet.</p>
-                </div>
-              )}
-            </div>
-          ) : (
-            <DataTable columns={columns} data={transactions} />
-          )}
+           <div className="space-y-2">
+            {transactions.map(t => (
+              <TransactionCard key={t.id} transaction={t} onEdit={openEditSheet} onDelete={handleDeleteTransaction} />
+            ))}
+            {transactions.length === 0 && (
+              <div className="text-center text-muted-foreground py-12">
+                  <p>No transactions yet.</p>
+              </div>
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>

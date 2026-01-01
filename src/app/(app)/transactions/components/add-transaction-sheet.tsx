@@ -43,6 +43,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { GraduationCap } from "lucide-react";
 import { format } from "date-fns";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 
 const formSchema = z.object({
@@ -80,6 +81,7 @@ export function AddTransactionSheet({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [categories, setCategories] = useState<Category[]>([]);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const savedCategories = localStorage.getItem('categories');
@@ -249,12 +251,12 @@ export function AddTransactionSheet({
       onOpenChange(open);
     }}>
       <SheetTrigger asChild>
-        <Button onClick={() => onOpenChange(true)}>
+        <Button onClick={() => onOpenChange(true)} className="w-full sm:w-auto">
           <PlusCircle className="mr-2 h-4 w-4" />
           Add Transaction
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col md:w-auto w-full md:max-w-sm">
+      <SheetContent className="flex flex-col w-full" side={isMobile ? 'bottom' : 'right'}>
         <SheetHeader>
           <SheetTitle>{transactionToEdit ? 'Edit Transaction' : 'Add New Transaction'}</SheetTitle>
           <SheetDescription>
@@ -287,7 +289,7 @@ export function AddTransactionSheet({
         )}
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-4 flex-grow flex flex-col">
+          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="flex-grow flex flex-col">
             <div className="flex-grow pr-4 -mr-6 overflow-y-auto space-y-4">
                 <FormField
                   control={form.control}
@@ -401,8 +403,8 @@ export function AddTransactionSheet({
                   )}
                 />
             </div>
-            <SheetFooter>
-                <Button type="submit" disabled={isScanning}>{transactionToEdit ? 'Save Changes' : 'Save Transaction'}</Button>
+            <SheetFooter className="mt-4">
+                <Button type="submit" disabled={isScanning} className="w-full">{transactionToEdit ? 'Save Changes' : 'Save Transaction'}</Button>
             </SheetFooter>
           </form>
         </Form>
