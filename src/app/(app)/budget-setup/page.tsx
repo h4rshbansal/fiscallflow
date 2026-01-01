@@ -14,8 +14,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { budgets as initialBudgets, categories as initialCategories } from '@/lib/data';
+import { budgets as initialBudgets, categories as initialCategories, transactions as initialTransactions } from '@/lib/data';
 import { formatCurrency } from '@/lib/utils';
+import type { Transaction } from '@/lib/types';
+
 
 export default function BudgetSetupPage() {
   const [step, setStep] = useState(1);
@@ -28,6 +30,30 @@ export default function BudgetSetupPage() {
 
   const totalAllocated = Object.values(budgets).reduce((sum, amount) => sum + Number(amount), 0);
   const remainingSalary = Number(salary) - totalAllocated;
+
+  const handleSkip = () => {
+    localStorage.setItem('hasCompletedSetup', 'true');
+    router.push('/dashboard');
+  };
+
+  const handleNext = () => {
+    // Add salary as an income transaction
+    const newTransaction: Transaction = {
+      id: `txn-${Date.now()}`,
+      date: new Date().toISOString(),
+      description: 'Monthly Salary',
+      amount: Number(salary) * 100, // in cents
+      category: 'Salary',
+      type: 'income',
+    };
+    
+    // In a real app, this would be an API call.
+    // For now, we modify the initialTransactions array.
+    // This is not ideal, but works for this demo app structure.
+    initialTransactions.unshift(newTransaction);
+    
+    setStep(2);
+  };
 
   const handleSaveBudget = () => {
     if (remainingSalary < 0) {
@@ -111,21 +137,26 @@ export default function BudgetSetupPage() {
             </div>
           )}
         </CardContent>
-        <CardFooter className="flex justify-end gap-4">
-          {step === 2 && (
-             <Button variant="outline" onClick={() => setStep(1)}>
-                Back
-             </Button>
-          )}
-          {step === 1 ? (
-             <Button onClick={() => setStep(2)} disabled={!salary || Number(salary) <= 0}>
-                Next
-             </Button>
-          ) : (
-            <Button onClick={handleSaveBudget}>
-                Save Budget and Continue
+        <CardFooter className="flex justify-between">
+           <Button variant="link" className="p-0" onClick={handleSkip}>
+              Skip for now
             </Button>
-          )}
+          <div className="flex justify-end gap-4">
+            {step === 2 && (
+              <Button variant="outline" onClick={() => setStep(1)}>
+                  Back
+              </Button>
+            )}
+            {step === 1 ? (
+              <Button onClick={handleNext} disabled={!salary || Number(salary) <= 0}>
+                  Next
+              </Button>
+            ) : (
+              <Button onClick={handleSaveBudget}>
+                  Save Budget and Continue
+              </Button>
+            )}
+          </div>
         </CardFooter>
       </Card>
     </div>
