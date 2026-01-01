@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -86,7 +87,7 @@ export default function BudgetSetupPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-2xl">
+      <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Set up your budget</CardTitle>
           <CardDescription>
