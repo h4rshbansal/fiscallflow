@@ -1,0 +1,188 @@
+{
+  "login": {
+    "title": "आपका स्वागत है!",
+    "description": "शुरू करने के लिए अपना विवरण दर्ज करें।",
+    "name_label": "नाम",
+    "name_placeholder": "अपना नाम दर्ज करें",
+    "age_label": "आयु: {age}",
+    "error_name": "कृपया अपना नाम दर्ज करें।",
+    "error_age": "आपकी आयु कम से कम 13 वर्ष होनी चाहिए।",
+    "continue_button": "जारी रखें"
+  },
+  "budget_setup": {
+    "title": "अपना बजट सेट करें",
+    "step1_description": "सबसे पहले, आइए आपकी मासिक आय से शुरू करें।",
+    "step2_description": "अब, अपनी आय को अपनी खर्च श्रेणियों में आवंटित करें।",
+    "salary_label": "मासिक वेतन (USD)",
+    "salary_placeholder": "उदा., 5000",
+    "summary": {
+      "total_salary": "कुल वेतन:",
+      "allocated": "आवंटित:",
+      "remaining": "शेष:"
+    },
+    "back_button": "वापस",
+    "next_button": "अगला",
+    "save_button": "बजट सहेजें और जारी रखें",
+    "toast_overbudget_title": "बजट से अधिक!",
+    "toast_overbudget_description": "आपका आवंटित बजट आपके वेतन से अधिक है। कृपया राशि समायोजित करें।",
+    "toast_saved_title": "बजट सहेजा गया!",
+    "toast_saved_description": "आपका प्रारंभिक बजट सेट हो गया है।"
+  },
+  "main_nav": {
+    "dashboard": "डैशबोर्ड",
+    "transactions": "लेन-देन",
+    "budgets": "बजट",
+    "reports": "रिपोर्ट",
+    "settings": "सेटिंग्स"
+  },
+  "user_nav": {
+    "settings": "सेटिंग्स",
+    "logout": "लॉग आउट"
+  },
+  "dashboard": {
+    "summary": {
+      "total_income": "कुल आय",
+      "total_expenses": "कुल खर्च",
+      "net_balance": "नेट बैलेंस",
+      "income_change_hint": "पिछले महीने से +20.1%",
+      "expense_change_hint": "पिछले महीने से +180.1%",
+      "net_balance_hint": "इस महीने का प्रदर्शन"
+    },
+    "spending_overview": {
+      "title": "खर्च का अवलोकन"
+    },
+    "recent_transactions": {
+      "title": "हाल के लेन-देन",
+      "description": "आपने इस महीने {count} लेन-देन किए हैं।",
+      "view_all_button": "सभी लेन-देन देखें"
+    },
+    "budget_progress": {
+      "title": "बजट प्रगति",
+      "description": "आपकी मासिक बजट स्थिति।",
+      "manage_budgets_button": "बजट प्रबंधित करें"
+    }
+  },
+  "transactions": {
+    "title": "लेन-देन",
+    "description": "आपके सभी हाल के लेन-देन की सूची।",
+    "summary": {
+      "total_income": "कुल आय",
+      "total_expense": "कुल खर्च",
+      "money_left": "बचे हुए पैसे"
+    },
+    "add_transaction_button": "लेन-देन जोड़ें",
+    "add_sheet": {
+      "add_title": "नया लेन-देन जोड़ें",
+      "add_description": "नीचे अपने नए लेन-देन का विवरण दर्ज करें।",
+      "edit_title": "लेन-देन संपादित करें",
+      "edit_description": "अपने लेन-देन का विवरण अपडेट करें।",
+      "description_label": "विवरण",
+      "description_placeholder": "उदा. दोस्तों के साथ कॉफी",
+      "amount_label": "राशि",
+      "amount_placeholder": "0.00",
+      "type_label": "लेन-देन का प्रकार",
+      "type_expense": "खर्च",
+      "type_income": "आय",
+      "category_label": "श्रेणी",
+      "category_placeholder": "एक श्रेणी चुनें",
+      "date_label": "लेन-देन की तारीख",
+      "date_placeholder": "एक तारीख चुनें",
+      "save_button": "लेन-देन सहेजें",
+      "save_changes_button": "बदलाव सहेजें",
+      "success_add": "लेन-देन सफलतापूर्वक जोड़ा गया।",
+      "success_update": "लेन-देन सफलतापूर्वक अपडेट किया गया।"
+    },
+    "table": {
+      "filter_placeholder": "विवरण फ़िल्टर करें...",
+      "no_results": "कोई परिणाम नहीं।",
+      "previous_button": "पिछला",
+      "next_button": "अगला",
+      "date_header": "तारीख",
+      "description_header": "विवरण",
+      "category_header": "श्रेणी",
+      "amount_header": "राशि",
+      "actions_label": "कार्रवाई",
+      "edit_action": "लेन-देन संपादित करें",
+      "delete_action": "लेन-देन हटाएं",
+      "delete_toast_title": "हटा दिया गया",
+      "delete_toast_description": "लेन-देन हटा दिया गया है।"
+    }
+  },
+  "budgets": {
+    "title": "बजट",
+    "description": "अपनी मासिक खर्च सीमाएं प्रबंधित करें।",
+    "ai_button": "AI सिफारिशें प्राप्त करें",
+    "ai_loading": "विश्लेषण हो रहा है...",
+    "card_title": "मासिक बजट",
+    "card_description": "प्रत्येक श्रेणी के लिए अपने खर्च को सेट और ट्रैक करें।",
+    "of": "का",
+    "ai_recommendation_toast_title": "AI सिफारिशें उत्पन्न हुईं",
+    "ai_recommendation_toast_description": "हमारे स्मार्ट सहायक के सुझावों की समीक्षा करें।",
+    "ai_error_toast_title": "त्रुटि",
+    "ai_error_toast_description": "AI सिफारिशें प्राप्त नहीं की जा सकीं। कृपया बाद में पुनः प्रयास करें।"
+  },
+  "reports": {
+    "title": "रिपोर्ट",
+    "description": "समय के साथ अपनी खर्च करने की आदतों का विश्लेषण करें।",
+    "date_range_placeholder": "तिथि सीमा चुनें",
+    "date_ranges": {
+      "this-month": "इस महीने",
+      "last-month": "पिछले महीने",
+      "last-3-months": "पिछले 3 महीने"
+    },
+    "spending_by_category": {
+      "title": "श्रेणी के अनुसार खर्च",
+      "description": "चयनित अवधि के लिए आपके खर्चों का विवरण।"
+    },
+    "category_breakdown": {
+      "title": "श्रेणी विवरण",
+      "description": "प्रति श्रेणी खर्च का प्रतिशत।"
+    },
+    "income_vs_expense": {
+      "title": "आय बनाम व्यय",
+      "description": "कुल आय और व्यय की तुलना।"
+    }
+  },
+  "settings": {
+    "title": "सेटिंग्स",
+    "description": "अपने खाते और एप्लिकेशन सेटिंग्स प्रबंधित करें।",
+    "categories": {
+      "title": "श्रेणियाँ",
+      "description": "अपनी लेन-देन श्रेणियां प्रबंधित करें। यह बजट और रिपोर्टिंग को प्रभावित करेगा।",
+      "new_category_placeholder": "नई श्रेणी का नाम",
+      "add_category_button": "श्रेणी जोड़ें",
+      "your_categories_label": "आपकी श्रेणियाँ"
+    },
+    "preferences": {
+      "title": "वरीयताएँ",
+      "description": "अपने अनुभव को अनुकूलित करें।",
+      "language_label": "भाषा",
+      "theme_label": "थीम",
+      "themes": {
+        "light": "लाइट",
+        "dark": "डार्क",
+        "system": "सिस्टम"
+      }
+    },
+    "errors": {
+      "category_empty": {
+        "title": "त्रुटि",
+        "description": "श्रेणी का नाम खाली नहीं हो सकता।"
+      },
+      "category_exists": {
+        "title": "त्रुटि",
+        "description": "श्रेणी पहले से मौजूद है।"
+      }
+    },
+    "success": {
+      "category_added": {
+        "title": "सफलता",
+        "description": "श्रेणी जोड़ी गई।"
+      },
+      "category_removed": {
+        "title": "सफलता",
+        "description": "श्रेणी हटा दी गई।"
+      }
+    }
+  }
+}

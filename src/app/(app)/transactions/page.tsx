@@ -42,6 +42,11 @@ export default function TransactionsPage() {
     setEditingTransaction(transaction);
     setIsSheetOpen(true);
   };
+  
+  const openAddSheet = () => {
+    setEditingTransaction(null);
+    setIsSheetOpen(true);
+  }
 
   const handleSheetOpenChange = (open: boolean) => {
     setIsSheetOpen(open);
@@ -62,7 +67,7 @@ export default function TransactionsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Income</CardTitle>
@@ -100,13 +105,15 @@ export default function TransactionsPage() {
                   <CardTitle>Transactions</CardTitle>
                   <CardDescription>A list of all your recent transactions.</CardDescription>
               </div>
-              <AddTransactionSheet
-                key={editingTransaction?.id} // Re-mounts the component when editing
-                isOpen={isSheetOpen}
-                onOpenChange={handleSheetOpenChange}
-                onSubmit={editingTransaction ? handleEditTransaction : handleAddTransaction}
-                transactionToEdit={editingTransaction}
-              />
+              <div className="w-full sm:w-auto">
+                <AddTransactionSheet
+                    key={editingTransaction?.id}
+                    isOpen={isSheetOpen}
+                    onOpenChange={handleSheetOpenChange}
+                    onSubmit={editingTransaction ? handleEditTransaction : handleAddTransaction}
+                    transactionToEdit={editingTransaction}
+                />
+              </div>
           </div>
         </CardHeader>
         <CardContent>

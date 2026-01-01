@@ -14,11 +14,13 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/context/language-provider";
 
 export function UserNav() {
   const [userName, setUserName] = useState("User");
   const [initial, setInitial] = useState("U");
   const router = useRouter();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const name = localStorage.getItem("userName");
@@ -33,6 +35,7 @@ export function UserNav() {
   const handleLogout = () => {
     localStorage.removeItem("userName");
     localStorage.removeItem("userAge");
+    localStorage.removeItem('hasCompletedSetup');
     router.push("/");
   };
 
@@ -55,13 +58,13 @@ export function UserNav() {
         <DropdownMenuGroup>
           <Link href="/settings">
             <DropdownMenuItem>
-              Settings
+              {t('user_nav.settings')}
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout}>
-          Log out
+          {t('user_nav.logout')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

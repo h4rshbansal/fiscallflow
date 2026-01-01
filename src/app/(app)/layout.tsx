@@ -13,6 +13,8 @@ import {
 } from '@/components/ui/sidebar';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { BottomNav } from '@/components/bottom-nav';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function AppLayout({
   children,
@@ -21,6 +23,7 @@ export default function AppLayout({
 }) {
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setIsClient(true);
@@ -41,16 +44,18 @@ export default function AppLayout({
 
   return (
     <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader className="border-b">
-          <div className="flex h-14 items-center p-4">
-            <Logo />
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <MainNav />
-        </SidebarContent>
-      </Sidebar>
+      {!isMobile && (
+        <Sidebar>
+          <SidebarHeader className="border-b">
+            <div className="flex h-14 items-center p-4">
+              <Logo />
+            </div>
+          </SidebarHeader>
+          <SidebarContent>
+            <MainNav />
+          </SidebarContent>
+        </Sidebar>
+      )}
 
       <SidebarInset>
         <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
@@ -62,6 +67,10 @@ export default function AppLayout({
           </div>
         </header>
         <main className="flex-1 p-4 sm:p-6">{children}</main>
+        <footer className="p-4 text-center text-sm text-muted-foreground">
+          Made By Harsh Bansal
+        </footer>
+        {isMobile && <BottomNav />}
       </SidebarInset>
     </SidebarProvider>
   );

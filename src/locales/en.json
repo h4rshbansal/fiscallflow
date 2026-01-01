@@ -1,0 +1,188 @@
+{
+  "login": {
+    "title": "Welcome!",
+    "description": "Enter your details to get started.",
+    "name_label": "Name",
+    "name_placeholder": "Enter your name",
+    "age_label": "Age: {age}",
+    "error_name": "Please enter your name.",
+    "error_age": "You must be at least 13 years old.",
+    "continue_button": "Continue"
+  },
+  "budget_setup": {
+    "title": "Set up your budget",
+    "step1_description": "First, let's start with your monthly salary.",
+    "step2_description": "Now, allocate your salary across your spending categories.",
+    "salary_label": "Monthly Salary (USD)",
+    "salary_placeholder": "e.g., 5000",
+    "summary": {
+      "total_salary": "Total Salary:",
+      "allocated": "Allocated:",
+      "remaining": "Remaining:"
+    },
+    "back_button": "Back",
+    "next_button": "Next",
+    "save_button": "Save Budget and Continue",
+    "toast_overbudget_title": "Overbudget!",
+    "toast_overbudget_description": "Your allocated budget exceeds your salary. Please adjust the amounts.",
+    "toast_saved_title": "Budget Saved!",
+    "toast_saved_description": "Your initial budget has been set up."
+  },
+  "main_nav": {
+    "dashboard": "Dashboard",
+    "transactions": "Transactions",
+    "budgets": "Budgets",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "user_nav": {
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "dashboard": {
+    "summary": {
+      "total_income": "Total Income",
+      "total_expenses": "Total Expenses",
+      "net_balance": "Net Balance",
+      "income_change_hint": "+20.1% from last month",
+      "expense_change_hint": "+180.1% from last month",
+      "net_balance_hint": "This month's performance"
+    },
+    "spending_overview": {
+      "title": "Spending Overview"
+    },
+    "recent_transactions": {
+      "title": "Recent Transactions",
+      "description": "You made {count} transactions this month.",
+      "view_all_button": "View All Transactions"
+    },
+    "budget_progress": {
+      "title": "Budget Progress",
+      "description": "Your monthly budget status.",
+      "manage_budgets_button": "Manage Budgets"
+    }
+  },
+  "transactions": {
+    "title": "Transactions",
+    "description": "A list of all your recent transactions.",
+    "summary": {
+      "total_income": "Total Income",
+      "total_expense": "Total Expense",
+      "money_left": "Money Left"
+    },
+    "add_transaction_button": "Add Transaction",
+    "add_sheet": {
+      "add_title": "Add New Transaction",
+      "add_description": "Enter the details of your new transaction below.",
+      "edit_title": "Edit Transaction",
+      "edit_description": "Update the details of your transaction.",
+      "description_label": "Description",
+      "description_placeholder": "e.g. Coffee with friends",
+      "amount_label": "Amount",
+      "amount_placeholder": "0.00",
+      "type_label": "Transaction Type",
+      "type_expense": "Expense",
+      "type_income": "Income",
+      "category_label": "Category",
+      "category_placeholder": "Select a category",
+      "date_label": "Transaction Date",
+      "date_placeholder": "Pick a date",
+      "save_button": "Save Transaction",
+      "save_changes_button": "Save Changes",
+      "success_add": "Transaction added successfully.",
+      "success_update": "Transaction updated successfully."
+    },
+    "table": {
+      "filter_placeholder": "Filter descriptions...",
+      "no_results": "No results.",
+      "previous_button": "Previous",
+      "next_button": "Next",
+      "date_header": "Date",
+      "description_header": "Description",
+      "category_header": "Category",
+      "amount_header": "Amount",
+      "actions_label": "Actions",
+      "edit_action": "Edit transaction",
+      "delete_action": "Delete transaction",
+      "delete_toast_title": "Deleted",
+      "delete_toast_description": "Transaction has been deleted."
+    }
+  },
+  "budgets": {
+    "title": "Budgets",
+    "description": "Manage your monthly spending limits.",
+    "ai_button": "Get AI Recommendations",
+    "ai_loading": "Analyzing...",
+    "card_title": "Monthly Budgets",
+    "card_description": "Set and track your spending for each category.",
+    "of": "of",
+    "ai_recommendation_toast_title": "AI Recommendations Generated",
+    "ai_recommendation_toast_description": "Review the suggestions from our smart assistant.",
+    "ai_error_toast_title": "Error",
+    "ai_error_toast_description": "Could not fetch AI recommendations. Please try again later."
+  },
+  "reports": {
+    "title": "Reports",
+    "description": "Analyze your spending habits over time.",
+    "date_range_placeholder": "Select date range",
+    "date_ranges": {
+      "this-month": "This Month",
+      "last-month": "Last Month",
+      "last-3-months": "Last 3 Months"
+    },
+    "spending_by_category": {
+      "title": "Spending by Category",
+      "description": "Breakdown of your expenses for the selected period."
+    },
+    "category_breakdown": {
+      "title": "Category Breakdown",
+      "description": "Percentage of spending per category."
+    },
+    "income_vs_expense": {
+      "title": "Income vs. Expense",
+      "description": "Comparison of total income and expenses."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account and application settings.",
+    "categories": {
+      "title": "Categories",
+      "description": "Manage your transaction categories. This will affect budgeting and reporting.",
+      "new_category_placeholder": "New category name",
+      "add_category_button": "Add Category",
+      "your_categories_label": "Your Categories"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "description": "Customize your experience.",
+      "language_label": "Language",
+      "theme_label": "Theme",
+      "themes": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      }
+    },
+    "errors": {
+      "category_empty": {
+        "title": "Error",
+        "description": "Category name cannot be empty."
+      },
+      "category_exists": {
+        "title": "Error",
+        "description": "Category already exists."
+      }
+    },
+    "success": {
+      "category_added": {
+        "title": "Success",
+        "description": "Category added."
+      },
+      "category_removed": {
+        "title": "Success",
+        "description": "Category removed."
+      }
+    }
+  }
+}

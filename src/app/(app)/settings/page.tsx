@@ -9,19 +9,23 @@ import { useToast } from "@/hooks/use-toast";
 import { categories as initialCategories } from "@/lib/data";
 import type { Category } from "@/lib/types";
 import { GraduationCap, Trash2 } from "lucide-react";
+import { useLanguage } from "@/context/language-provider";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 
 export default function SettingsPage() {
   const [categories, setCategories] = useState<Category[]>(initialCategories.filter(c => c.name !== 'Salary'));
   const [newCategoryName, setNewCategoryName] = useState("");
   const { toast } = useToast();
+  const { language, setLanguage, t } = useLanguage();
 
   const handleAddCategory = () => {
     if (!newCategoryName.trim()) {
-      toast({ variant: "destructive", title: "Error", description: "Category name cannot be empty." });
+      toast({ variant: "destructive", title: t('settings.errors.category_empty.title'), description: t('settings.errors.category_empty.description') });
       return;
     }
     if (categories.some(c => c.name.toLowerCase() === newCategoryName.trim().toLowerCase())) {
-        toast({ variant: "destructive", title: "Error", description: "Category already exists." });
+        toast({ variant: "destructive", title: t('settings.errors.category_exists.title'), description: t('settings.errors.category_exists.description') });
         return;
     }
 
@@ -34,38 +38,38 @@ export default function SettingsPage() {
 
     setCategories(prev => [...prev, newCategory]);
     setNewCategoryName("");
-    toast({ title: "Success", description: "Category added." });
+    toast({ title: t('settings.success.category_added.title'), description: t('settings.success.category_added.description') });
   };
 
   const handleRemoveCategory = (id: string) => {
     setCategories(prev => prev.filter(c => c.id !== id));
-    toast({ title: "Success", description: "Category removed." });
+    toast({ title: t('settings.success.category_removed.title'), description: t('settings.success.category_removed.description') });
   };
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
-        <p className="text-muted-foreground">Manage your account and application settings.</p>
+        <h1 className="text-2xl font-bold tracking-tight">{t('settings.title')}</h1>
+        <p className="text-muted-foreground">{t('settings.description')}</p>
       </div>
       
       <Card>
         <CardHeader>
-          <CardTitle>Categories</CardTitle>
-          <CardDescription>Manage your transaction categories. This will affect budgeting and reporting.</CardDescription>
+          <CardTitle>{t('settings.categories.title')}</CardTitle>
+          <CardDescription>{t('settings.categories.description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex gap-2">
             <Input 
-              placeholder="New category name" 
+              placeholder={t('settings.categories.new_category_placeholder')}
               value={newCategoryName} 
               onChange={(e) => setNewCategoryName(e.target.value)}
             />
-            <Button onClick={handleAddCategory}>Add Category</Button>
+            <Button onClick={handleAddCategory}>{t('settings.categories.add_category_button')}</Button>
           </div>
           
           <div className="space-y-2">
-            <h3 className="text-sm font-medium text-muted-foreground">Your Categories</h3>
+            <h3 className="text-sm font-medium text-muted-foreground">{t('settings.categories.your_categories_label')}</h3>
             <ul className="rounded-md border">
               {categories.map(category => (
                 <li key={category.id} className="flex items-center justify-between p-3 border-b last:border-b-0">
@@ -85,11 +89,22 @@ export default function SettingsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Profile</CardTitle>
-          <CardDescription>This is how others will see you on the site.</CardDescription>
+          <CardTitle>{t('settings.preferences.title')}</CardTitle>
+          <CardDescription>{t('settings.preferences.description')}</CardDescription>
         </CardHeader>
-        <CardContent>
-            <p>Profile settings will be available soon.</p>
+        <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label>{t('settings.preferences.language_label')}</Label>
+              <Select value={language} onValueChange={(value) => setLanguage(value as 'en' | 'hi')}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="hi">हिन्दी</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
         </CardContent>
       </Card>
     </div>

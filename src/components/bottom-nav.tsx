@@ -3,11 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-} from "@/components/ui/sidebar";
-import {
   LayoutDashboard,
   ArrowLeftRight,
   PiggyBank,
@@ -15,8 +10,9 @@ import {
   Settings,
 } from "lucide-react";
 import { useLanguage } from "@/context/language-provider";
+import { cn } from "@/lib/utils";
 
-export function MainNav() {
+export function BottomNav() {
   const pathname = usePathname();
   const { t } = useLanguage();
 
@@ -49,24 +45,25 @@ export function MainNav() {
   ];
 
   return (
-    <nav className="p-2">
-      <SidebarMenu>
-        {navItems.map((item) => (
-          <SidebarMenuItem key={item.href}>
-            <SidebarMenuButton
-              asChild
-              isActive={pathname.startsWith(item.href)}
-              className="w-full"
-              tooltip={item.label}
+    <div className="fixed bottom-0 left-0 z-50 w-full h-16 bg-background border-t md:hidden">
+      <div className="grid h-full max-w-lg grid-cols-5 mx-auto font-medium">
+        {navItems.map((item) => {
+           const isActive = pathname.startsWith(item.href);
+           return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group",
+                isActive ? "text-primary" : "text-muted-foreground"
+              )}
             >
-              <Link href={item.href}>
-                <item.icon className="h-4 w-4" />
-                <span>{item.label}</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        ))}
-      </SidebarMenu>
-    </nav>
+              <item.icon className="w-5 h-5 mb-1" />
+              <span className="text-xs">{item.label}</span>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
   );
 }
