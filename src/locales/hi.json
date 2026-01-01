@@ -192,6 +192,7 @@
     "add_goal_button": "नया लक्ष्य जोड़ें",
     "create_first_goal_button": "अपना पहला लक्ष्य बनाएं",
     "add_funds_button": "धन जोड़ें",
+    "remove_funds_button": "धन निकालें",
     "target_label": "लक्ष्य",
     "empty_state": {
         "title": "अभी तक कोई लक्ष्य नहीं",
@@ -205,6 +206,10 @@
         "funds_added": {
             "title": "धन जोड़ा गया",
             "description": "पैसा सफलतापूर्वक आपके लक्ष्य में आवंटित कर दिया गया है।"
+        },
+        "funds_removed": {
+            "title": "धन निकाला गया",
+            "description": "पैसा सफलतापूर्वक आपके लक्ष्य से निकाल लिया गया है।"
         }
     },
     "add_goal_dialog": {
@@ -219,7 +224,16 @@
         "title": "\"{goalName}\" में धन जोड़ें",
         "description": "आप कितना योगदान करना चाहेंगे?",
         "amount_label": "जोड़ने के लिए राशि",
-        "submit_button": "धन जोड़ें"
+        "submit_button": "धन जोड़ें",
+        "leftover_balance_label": "बची हुई शेष राशि",
+        "add_leftover_button": "बची हुई राशि जोड़ें"
+    },
+    "remove_funds_dialog": {
+        "title": "\"{goalName}\" से धन निकालें",
+        "description": "वर्तमान राशि {currentAmount} है। आप कितनी राशि निकालना चाहेंगे?",
+        "amount_label": "निकालने के लिए राशि",
+        "submit_button": "धन निकालें",
+        "error_insufficient_funds": "आप वर्तमान राशि से अधिक नहीं निकाल सकते।"
     }
   }
 }

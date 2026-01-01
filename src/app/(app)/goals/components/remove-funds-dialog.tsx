@@ -23,27 +23,24 @@ import {
 } from '@/components/ui/form';
 import type { Goal } from '@/lib/types';
 import { useLanguage } from '@/context/language-provider';
-import { formatCurrency } from '@/lib/utils';
-import { transactions } from '@/lib/data';
-import { useMemo } from 'react';
 
 const formSchema = z.object({
   amount: z.coerce.number().positive({ message: 'Amount must be positive.' }),
 });
 
-interface AddFundsDialogProps {
+interface RemoveFundsDialogProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   goal: Goal;
   onSubmit: (goalId: string, amount: number) => void;
 }
 
-export function AddFundsDialog({
+export function RemoveFundsDialog({
   isOpen,
   onOpenChange,
   goal,
   onSubmit,
-}: AddFundsDialogProps) {
+}: RemoveFundsDialogProps) {
   const { t } = useLanguage();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,34 +49,23 @@ export function AddFundsDialog({
     },
   });
 
-  const netBalance = useMemo(() => {
-    const totalIncome = transactions
-      .filter((t) => t.type === 'income')
-      .reduce((acc, t) => acc + t.amount, 0);
-    const totalExpenses = transactions
-      .filter((t) => t.type === 'expense')
-      .reduce((acc, t) => acc + t.amount, 0);
-    return totalIncome - totalExpenses;
-  }, []);
-
   const handleFormSubmit = (values: z.infer<typeof formSchema>) => {
+    if (values.amount * 100 > goal.currentAmount) {
+        form.setError('amount', { message: t('goals.remove_funds_dialog.error_insufficient_funds') });
+        return;
+    }
     onSubmit(goal.id, values.amount * 100);
     onOpenChange(false);
     form.reset();
-  };
-
-  const setLeftover = () => {
-    const leftoverAmount = netBalance > 0 ? netBalance / 100 : 0;
-    form.setValue('amount', leftoverAmount);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t('goals.add_funds_dialog.title', { goalName: goal.name })}</DialogTitle>
+          <DialogTitle>{t('goals.remove_funds_dialog.title', { goalName: goal.name })}</DialogTitle>
           <DialogDescription>
-            {t('goals.add_funds_dialog.description')}
+            {t('goals.remove_funds_dialog.description', { currentAmount: goal.currentAmount / 100 })}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -89,7 +75,7 @@ export function AddFundsDialog({
               name="amount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('goals.add_funds_dialog.amount_label')}</FormLabel>
+                  <FormLabel>{t('goals.remove_funds_dialog.amount_label')}</FormLabel>
                   <FormControl>
                     <Input type="number" placeholder="0.00" {...field} />
                   </FormControl>
@@ -97,16 +83,8 @@ export function AddFundsDialog({
                 </FormItem>
               )}
             />
-             {netBalance > 0 && (
-              <div className="text-sm text-muted-foreground flex justify-between items-center">
-                <span>{t('goals.add_funds_dialog.leftover_balance_label')}: {formatCurrency(netBalance)}</span>
-                <Button type="button" variant="link" size="sm" onClick={setLeftover} className="p-0 h-auto">
-                  {t('goals.add_funds_dialog.add_leftover_button')}
-                </Button>
-              </div>
-            )}
             <DialogFooter>
-              <Button type="submit">{t('goals.add_funds_dialog.submit_button')}</Button>
+              <Button type="submit" variant="destructive">{t('goals.remove_funds_dialog.submit_button')}</Button>
             </DialogFooter>
           </form>
         </Form>

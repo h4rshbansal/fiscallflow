@@ -17,12 +17,14 @@ import { useToast } from '@/hooks/use-toast';
 import { PlusCircle, Target } from 'lucide-react';
 import { AddGoalDialog } from './components/add-goal-dialog';
 import { AddFundsDialog } from './components/add-funds-dialog';
+import { RemoveFundsDialog } from './components/remove-funds-dialog';
 import { useLanguage } from '@/context/language-provider';
 
 export default function GoalsPage() {
   const [goals, setGoals] = useState<Goal[]>(initialGoals);
   const [isAddGoalOpen, setIsAddGoalOpen] = useState(false);
   const [isAddFundsOpen, setIsAddFundsOpen] = useState(false);
+  const [isRemoveFundsOpen, setIsRemoveFundsOpen] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
   const { toast } = useToast();
   const { t } = useLanguage();
@@ -47,10 +49,26 @@ export default function GoalsPage() {
     );
     toast({ title: t('goals.toasts.funds_added.title'), description: t('goals.toasts.funds_added.description') });
   };
+  
+  const handleRemoveFunds = (goalId: string, amount: number) => {
+    setGoals((prev) =>
+      prev.map((g) =>
+        g.id === goalId
+          ? { ...g, currentAmount: g.currentAmount - amount }
+          : g
+      )
+    );
+    toast({ title: t('goals.toasts.funds_removed.title'), description: t('goals.toasts.funds_removed.description') });
+  };
 
   const openAddFundsDialog = (goal: Goal) => {
     setSelectedGoal(goal);
     setIsAddFundsOpen(true);
+  };
+  
+  const openRemoveFundsDialog = (goal: Goal) => {
+    setSelectedGoal(goal);
+    setIsRemoveFundsOpen(true);
   };
 
   return (
@@ -71,7 +89,7 @@ export default function GoalsPage() {
       {goals.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {goals.map((goal) => {
-            const progress = (goal.currentAmount / goal.targetAmount) * 100;
+            const progress = goal.targetAmount > 0 ? (goal.currentAmount / goal.targetAmount) * 100 : 0;
             return (
               <Card key={goal.id}>
                 <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-4">
@@ -93,13 +111,23 @@ export default function GoalsPage() {
                       <span className="text-muted-foreground">{progress.toFixed(0)}%</span>
                     </div>
                   </div>
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => openAddFundsDialog(goal)}
-                  >
-                    {t('goals.add_funds_button')}
-                  </Button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                        variant="secondary"
+                        className="w-full"
+                        onClick={() => openRemoveFundsDialog(goal)}
+                        disabled={goal.currentAmount === 0}
+                    >
+                        {t('goals.remove_funds_button')}
+                    </Button>
+                    <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => openAddFundsDialog(goal)}
+                    >
+                        {t('goals.add_funds_button')}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             );
@@ -133,6 +161,15 @@ export default function GoalsPage() {
           onOpenChange={setIsAddFundsOpen}
           goal={selectedGoal}
           onSubmit={handleAddFunds}
+        />
+      )}
+      
+      {selectedGoal && (
+        <RemoveFundsDialog
+          isOpen={isRemoveFundsOpen}
+          onOpenChange={setIsRemoveFundsOpen}
+          goal={selectedGoal}
+          onSubmit={handleRemoveFunds}
         />
       )}
     </div>

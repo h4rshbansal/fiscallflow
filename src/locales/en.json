@@ -192,6 +192,7 @@
     "add_goal_button": "Add New Goal",
     "create_first_goal_button": "Create Your First Goal",
     "add_funds_button": "Add Funds",
+    "remove_funds_button": "Remove Funds",
     "target_label": "Target",
     "empty_state": {
         "title": "No Goals Yet",
@@ -205,6 +206,10 @@
         "funds_added": {
             "title": "Funds Added",
             "description": "Money has been successfully allocated to your goal."
+        },
+        "funds_removed": {
+            "title": "Funds Removed",
+            "description": "Money has been successfully removed from your goal."
         }
     },
     "add_goal_dialog": {
@@ -219,7 +224,16 @@
         "title": "Add Funds to \"{goalName}\"",
         "description": "How much would you like to contribute?",
         "amount_label": "Amount to Add",
-        "submit_button": "Add Funds"
+        "submit_button": "Add Funds",
+        "leftover_balance_label": "Leftover balance",
+        "add_leftover_button": "Add leftover"
+    },
+    "remove_funds_dialog": {
+        "title": "Remove Funds from \"{goalName}\"",
+        "description": "Current amount is {currentAmount}. How much would you like to remove?",
+        "amount_label": "Amount to Remove",
+        "submit_button": "Remove Funds",
+        "error_insufficient_funds": "You cannot remove more than the current amount."
     }
   }
 }
