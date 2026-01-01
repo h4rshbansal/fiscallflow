@@ -84,7 +84,7 @@ export const getColumns = (
       const formattedAmount = formatCurrency(amount);
 
       return (
-        <div className={`text-right font-medium ${type === 'income' ? 'text-emerald-500' : 'text-destructive'}`}>
+        <div className={`text-right font-medium ${type === 'income' ? 'text-emerald-500' : type === 'saving' ? 'text-blue-500' : 'text-destructive'}`}>
           {type === 'income' ? `+${formattedAmount}` : `-${formattedAmount}`}
         </div>
       )

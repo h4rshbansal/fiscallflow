@@ -6,7 +6,7 @@ export type Transaction = {
   description: string;
   amount: number; // in cents
   category: string; // category name
-  type: 'income' | 'expense';
+  type: 'income' | 'expense' | 'saving';
 };
 
 export type Category = {
@@ -14,7 +14,7 @@ export type Category = {
   name: string;
   icon: LucideIcon;
   color: string;
-  type: 'income' | 'expense';
+  type: 'income' | 'expense' | 'saving';
 };
 
 export type Budget = {

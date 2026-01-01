@@ -27,7 +27,7 @@ export default function SettingsPage() {
       const parsedCategories = JSON.parse(savedCategories).map((cat: any) => ({...cat, icon: GraduationCap}));
       setCategories(parsedCategories);
     } else {
-      setCategories(initialCategories.filter(c => c.name !== 'Salary'));
+      setCategories(initialCategories.filter(c => c.type !== 'income' && c.type !== 'saving'));
     }
   }, []);
 

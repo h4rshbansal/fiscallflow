@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/table";
 import { budgets as initialBudgets, categories as initialCategories, transactions as initialTransactions } from "@/lib/data";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { DollarSign, TrendingUp, Wallet } from "lucide-react";
+import { DollarSign, TrendingUp, Wallet, PiggyBank } from "lucide-react";
 import Link from "next/link";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import type { Transaction, Category, Budget } from "@/lib/types";
@@ -49,7 +49,10 @@ export default function Dashboard() {
   const totalExpenses = transactions
     .filter((t) => t.type === 'expense')
     .reduce((acc, t) => acc + t.amount, 0);
-  const netBalance = totalIncome - totalExpenses;
+  const totalSavings = transactions
+    .filter((t) => t.type === 'saving')
+    .reduce((acc, t) => acc + t.amount, 0);
+  const netBalance = totalIncome - totalExpenses - totalSavings;
 
   const spendingByCategory = categories
     .filter(c => c.type === 'expense' && c.name !== 'Savings')
@@ -70,7 +73,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Income</CardTitle>
@@ -89,6 +92,16 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(totalExpenses)}</div>
             <p className="text-xs text-muted-foreground">+180.1% from last month</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Savings</CardTitle>
+            <PiggyBank className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatCurrency(totalSavings)}</div>
+             <p className="text-xs text-muted-foreground">+10% from last month</p>
           </CardContent>
         </Card>
         <Card>
@@ -149,7 +162,7 @@ export default function Dashboard() {
                       {formatDate(new Date(transaction.date))}
                     </span>
                   </div>
-                  <div className={`font-medium ${transaction.type === 'income' ? 'text-green-500' : ''}`}>
+                  <div className={`font-medium ${transaction.type === 'income' ? 'text-green-500' : transaction.type === 'saving' ? 'text-blue-500' : ''}`}>
                     {transaction.type === 'income' ? '+' : '-'}
                     {formatCurrency(transaction.amount)}
                   </div>

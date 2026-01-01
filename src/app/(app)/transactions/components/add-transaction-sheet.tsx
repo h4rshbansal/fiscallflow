@@ -59,7 +59,7 @@ const formSchema = z.object({
   amount: z.coerce.number().positive({ message: "Amount must be positive." }),
   category: z.string().min(1, { message: "Please select a category." }),
   date: z.string().min(1, { message: "Please select a date." }),
-  type: z.enum(["expense", "income"], {
+  type: z.enum(["expense", "income", "saving"], {
     required_error: "You need to select a transaction type.",
   }),
 });
@@ -105,7 +105,7 @@ export function AddTransactionSheet({
   } : {
     description: "",
     amount: 0,
-    type: "expense" as "expense" | "income",
+    type: "expense" as "expense" | "income" | "saving",
     date: format(new Date(), 'yyyy-MM-dd'),
     category: "",
   }
@@ -347,6 +347,12 @@ export function AddTransactionSheet({
                             </FormControl>
                             <FormLabel className="font-normal">Income</FormLabel>
                           </FormItem>
+                           <FormItem className="flex items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="saving" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Saving</FormLabel>
+                          </FormItem>
                         </RadioGroup>
                       </FormControl>
                       <FormMessage />
@@ -361,8 +367,14 @@ export function AddTransactionSheet({
                     <FormItem>
                       <FormLabel>Category</FormLabel>
                       <Select
-                        onValueChange={field.onChange}
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          if (transactionType === 'saving') {
+                            form.setValue('category', 'Savings');
+                          }
+                        }}
                         value={field.value}
+                        disabled={transactionType === 'saving'}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -452,5 +464,3 @@ export function AddTransactionSheet({
     </>
   );
 }
-
-    

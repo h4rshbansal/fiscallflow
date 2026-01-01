@@ -10,7 +10,7 @@ import { getColumns } from "./components/columns";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { AddTransactionSheet } from "./components/add-transaction-sheet";
 import { useToast } from "@/hooks/use-toast";
-import { DollarSign, Wallet, TrendingUp, MoreHorizontal, GraduationCap } from "lucide-react";
+import { DollarSign, Wallet, TrendingUp, MoreHorizontal, GraduationCap, PiggyBank } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Badge } from "@/components/ui/badge";
@@ -46,7 +46,7 @@ const TransactionCard = ({ transaction, onEdit, onDelete }: { transaction: Trans
               )}
           </div>
           <div className="flex flex-col items-end">
-             <p className={`font-medium text-sm ${transaction.type === 'income' ? 'text-emerald-500' : 'text-destructive'}`}>
+             <p className={`font-medium text-sm ${transaction.type === 'income' ? 'text-emerald-500' : transaction.type === 'saving' ? 'text-blue-500' : 'text-destructive'}`}>
                 {transaction.type === 'income' ? '+' : '-'}
                 {formatCurrency(transaction.amount)}
             </p>
@@ -145,11 +145,14 @@ export default function TransactionsPage() {
   const totalExpenses = transactions
     .filter((t) => t.type === 'expense')
     .reduce((acc, t) => acc + t.amount, 0);
-  const netBalance = totalIncome - totalExpenses;
+  const totalSavings = transactions
+    .filter((t) => t.type === 'saving')
+    .reduce((acc, t) => acc + t.amount, 0);
+  const netBalance = totalIncome - totalExpenses - totalSavings;
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Income</CardTitle>
@@ -166,6 +169,15 @@ export default function TransactionsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(totalExpenses)}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Savings</CardTitle>
+            <PiggyBank className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatCurrency(totalSavings)}</div>
           </CardContent>
         </Card>
         <Card>
