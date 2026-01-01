@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -8,10 +9,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/logo";
 import { Slider } from "@/components/ui/slider";
+import type { Transaction } from "@/lib/types";
 
 export default function AuthPage() {
   const [name, setName] = useState("");
   const [age, setAge] = useState([18]);
+  const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -25,16 +28,36 @@ export default function AuthPage() {
       return;
     }
     setError("");
-    localStorage.setItem("userName", name);
-    localStorage.setItem("userAge", age[0].toString());
-    // Redirect to budget setup if not completed, otherwise to dashboard
+    
     const hasCompletedSetup = localStorage.getItem('hasCompletedSetup');
+    
+    // Only save user details and initial amount if it's the first time
+    if (!hasCompletedSetup) {
+      localStorage.setItem("userName", name);
+      localStorage.setItem("userAge", age[0].toString());
+
+      if (amount && Number(amount) > 0) {
+        const initialTransaction: Transaction = {
+          id: `txn-${Date.now()}`,
+          date: new Date().toISOString(),
+          description: "Initial Balance",
+          amount: Number(amount) * 100, // in cents
+          category: "Salary",
+          type: "income",
+        };
+        const existingTransactions = JSON.parse(localStorage.getItem('transactions') || '[]');
+        localStorage.setItem('transactions', JSON.stringify([initialTransaction, ...existingTransactions]));
+      }
+    }
+
     if (!hasCompletedSetup) {
         router.push("/budget-setup");
     } else {
         router.push("/dashboard");
     }
   };
+
+  const hasCompletedSetup = typeof window !== 'undefined' ? localStorage.getItem('hasCompletedSetup') : null;
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
@@ -68,6 +91,18 @@ export default function AuthPage() {
                 onValueChange={setAge}
               />
             </div>
+            {!hasCompletedSetup && (
+               <div className="space-y-2">
+                <Label htmlFor="amount">Initial Amount (Optional)</Label>
+                <Input
+                  id="amount"
+                  type="number"
+                  placeholder="Enter initial balance"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                />
+              </div>
+            )}
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button onClick={handleLogin} className="w-full">
               Continue
