@@ -194,6 +194,7 @@
     "create_first_goal_button": "Create Your First Goal",
     "add_funds_button": "Add Funds",
     "remove_funds_button": "Remove Funds",
+    "mark_achieved_button": "Mark as Achieved",
     "target_label": "Target",
     "empty_state": {
         "title": "No Goals Yet",
@@ -211,6 +212,10 @@
         "funds_removed": {
             "title": "Funds Removed",
             "description": "Money has been successfully removed from your goal."
+        },
+        "goal_achieved": {
+            "title": "Goal Achieved!",
+            "description": "Congratulations on reaching your financial goal!"
         }
     },
     "add_goal_dialog": {

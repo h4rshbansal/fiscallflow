@@ -11,7 +11,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { BottomNav } from '@/components/bottom-nav';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -22,6 +22,7 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isClient, setIsClient] = useState(false);
   const isMobile = useIsMobile();
 
@@ -29,14 +30,14 @@ export default function AppLayout({
     setIsClient(true);
     const hasUserName = localStorage.getItem('userName');
     if (!hasUserName) {
-      router.push('/');
+      router.push('/auth');
       return;
     }
     const hasCompletedSetup = localStorage.getItem('hasCompletedSetup');
-    if (!hasCompletedSetup) {
+    if (!hasCompletedSetup && pathname !== '/budget-setup') {
       router.push('/budget-setup');
     }
-  }, [router]);
+  }, [router, pathname]);
 
   if (!isClient) {
     return null; // or a loading spinner

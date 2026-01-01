@@ -28,4 +28,5 @@ export type Goal = {
     name: string;
     targetAmount: number; // in cents
     currentAmount: number; // in cents
+    status: 'in-progress' | 'achieved';
 };

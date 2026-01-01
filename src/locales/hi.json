@@ -194,6 +194,7 @@
     "create_first_goal_button": "अपना पहला लक्ष्य बनाएं",
     "add_funds_button": "धन जोड़ें",
     "remove_funds_button": "धन निकालें",
+    "mark_achieved_button": "प्राप्त के रूप में चिह्नित करें",
     "target_label": "लक्ष्य",
     "empty_state": {
         "title": "अभी तक कोई लक्ष्य नहीं",
@@ -211,6 +212,10 @@
         "funds_removed": {
             "title": "धन निकाला गया",
             "description": "पैसा सफलतापूर्वक आपके लक्ष्य से निकाल लिया गया है।"
+        },
+        "goal_achieved": {
+            "title": "लक्ष्य प्राप्त हुआ!",
+            "description": "अपने वित्तीय लक्ष्य तक पहुँचने पर बधाई!"
         }
     },
     "add_goal_dialog": {
