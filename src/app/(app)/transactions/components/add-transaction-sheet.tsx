@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState, useRef } from "react";
@@ -101,9 +102,16 @@ export function AddTransactionSheet({
     defaultValues: defaultValues,
   });
 
+  const transactionType = form.watch("type");
+
   useEffect(() => {
     form.reset(defaultValues);
   }, [transactionToEdit, form, isOpen]);
+
+  useEffect(() => {
+    // Reset category when transaction type changes
+    form.setValue("category", "");
+  }, [transactionType, form]);
 
   useEffect(() => {
     let stream: MediaStream | null = null;
@@ -223,6 +231,13 @@ export function AddTransactionSheet({
     // Reset file input
     event.target.value = '';
   }
+
+  const filteredCategories = categories.filter(c => {
+    if (transactionType === 'income') {
+      return c.name === 'Salary';
+    }
+    return c.name !== 'Salary';
+  });
 
 
   return (
@@ -346,7 +361,7 @@ export function AddTransactionSheet({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {categories.map((cat) => (
+                          {filteredCategories.map((cat) => (
                             <SelectItem key={cat.id} value={cat.name}>
                               {cat.name}
                             </SelectItem>
@@ -456,3 +471,5 @@ export function AddTransactionSheet({
     </>
   );
 }
+
+    
