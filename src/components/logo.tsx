@@ -1,11 +1,103 @@
-import { PiggyBank } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <div className={cn("flex items-center gap-2", className)}>
-      <PiggyBank className="h-6 w-6 text-accent" />
-      <span className="font-headline text-lg font-semibold text-foreground">Fiscal Flow</span>
+    <div className={cn("flex items-center gap-2 text-foreground", className)}>
+       <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 160 120"
+        className="h-10 w-auto"
+        fill="none"
+      >
+        <g transform="translate(0, -10)">
+          <path
+            d="M66.44 33.39L51.35 33.39L51.35 30.19L63.24 30.19L63.24 16.59L51.35 16.59L51.35 13.39L66.44 13.39L66.44 8.59L45.75 8.59L45.75 38.19L66.44 38.19L66.44 33.39Z"
+            fill="#2E7D32"
+          />
+          <path
+            d="M69.64 38.19L74.84 38.19L74.84 8.59L69.64 8.59L69.64 38.19Z"
+            fill="#2E7D32"
+          />
+          <path
+            d="M87.72 26.19C88.92 26.19 89.82 25.99 90.42 25.59L91.12 28.59C90.22 29.09 88.92 29.39 87.32 29.39C82.42 29.39 80.02 26.59 80.02 22.09C80.02 17.59 82.52 14.79 87.02 14.79C88.62 14.79 89.82 15.09 90.72 15.59L90.02 18.59C89.32 18.19 88.32 17.99 87.22 17.99C85.32 17.99 84.42 19.39 84.42 21.99C84.42 24.69 85.32 26.19 87.72 26.19Z"
+            fill="#2E7D32"
+          />
+          <path
+            d="M102.31 38.19L107.51 38.19L107.51 22.99C107.51 20.39 106.61 18.99 104.71 18.99C102.81 18.99 101.91 20.29 101.91 22.99L101.91 38.19ZM102.31 15.59L107.11 15.59L107.11 18.09C106.41 16.59 105.01 14.79 102.01 14.79C98.51 14.79 96.61 17.09 96.61 21.69L96.61 38.19L101.81 38.19L101.81 22.59C101.81 20.99 102.01 20.39 102.31 20.09C102.71 19.69 103.21 19.49 103.91 19.49C104.91 19.49 105.41 20.19 105.41 21.49L105.41 38.19L105.41 38.19"
+            fill="#2E7D32"
+          />
+          <path
+            d="M109.8 38.19L115 38.19L115 8.59L109.8 8.59L109.8 38.19Z"
+            fill="#2E7D32"
+          />
+          <path
+            d="M123.69 14.79C120.39 14.79 118.49 17.29 118.49 21.49L118.49 38.19L123.69 38.19L123.69 21.79C123.69 19.69 124.69 18.69 126.39 18.69C128.09 18.69 129.09 19.69 129.09 21.79L129.09 38.19L134.29 38.19L134.29 21.49C134.29 17.29 132.39 14.79 129.09 14.79C127.39 14.79 125.99 15.69 125.19 17.09C124.79 16.19 124.39 15.69 123.69 14.79Z"
+            fill="#2E7D32"
+          />
+          <path
+            d="M136.98 38.19L142.18 38.19L142.18 15.19L136.98 15.19L136.98 38.19Z"
+            fill="#2E7D32"
+          />
+          <path
+            d="M150.17 38.19L155.37 38.19L155.37 25.99C155.37 23.39 154.47 21.99 152.57 21.99C150.67 21.99 149.77 23.29 149.77 25.99L149.77 38.19ZM150.17 8.59L154.97 8.59L154.97 11.09C154.27 9.59 152.87 7.79 149.87 7.79C146.37 7.79 144.47 10.09 144.47 14.69L144.47 38.19L149.67 38.19L149.67 15.59C149.67 13.99 149.87 13.39 150.17 13.09C150.57 12.69 151.07 12.49 151.77 12.49C152.77 12.49 153.27 13.19 153.27 14.49L153.27 38.19L153.27 38.19"
+            fill="#2E7D32"
+          />
+          <path
+            d="M51.84 57.75L51.84 54.05L55.54 54.05L55.54 44.55L48.14 44.55L48.14 54.05L48.14 57.75L44.64 57.75L44.64 40.85L59.04 40.85L59.04 57.75L51.84 57.75Z"
+            fill="#2E7D32"
+          />
+          <path
+            d="M69.03 57.75L64.33 40.85L68.73 40.85L71.33 50.45L74.03 40.85L78.33 40.85L73.63 57.75L69.03 57.75Z"
+            fill="#2E7D32"
+          />
+          <path
+            d="M86.35 40.85L80.55 40.85L80.55 57.75L86.35 57.75L86.35 54.05L84.25 54.05L84.25 50.65L86.25 50.65L86.25 47.25L84.25 47.25L84.25 44.55L86.35 44.55L86.35 40.85Z"
+            fill="#2E7D32"
+          />
+          <path d="M89.05 57.75L89.05 40.85L92.75 40.85L92.75 57.75L89.05 57.75Z" fill="#2E7D32" />
+          <path
+            d="M96.05 57.75L96.05 40.85L99.75 40.85L99.75 57.75L96.05 57.75Z"
+            fill="#2E7D32"
+          />
+        </g>
+        <g transform="translate(10, 20) scale(0.8)">
+            <path d="M45.75 8.59L66.44 8.59V13.39L51.35 13.39V16.59L63.24 16.59V30.19L51.35 30.19V33.39L66.44 33.39V38.19L45.75 38.19V8.59Z" fill="url(#grad)" stroke="#4CAF50" strokeWidth="1.5"/>
+            <path d="M45.75 45L45.75 60L55.75 75L45.75 90L45.75 105" stroke="#4CAF50" strokeWidth="1.5" fill="none"/>
+            <path d="M35.75 105L65.75 105" stroke="#4CAF50" strokeWidth="1.5" fill="none"/>
+            <defs>
+                <linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style={{stopColor: '#4CAF50', stopOpacity: 1}} />
+                <stop offset="100%" style={{stopColor: '#2E7D32', stopOpacity: 1}} />
+                </linearGradient>
+            </defs>
+        </g>
+         <g transform="translate(20, 0)">
+          <path d="M40 50 L70 30 L100 40 L130 20" stroke="#AED581" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="40" cy="50" r="4" fill="#AED581" stroke="#fff" strokeWidth="1"/>
+          <circle cx="70" cy="30" r="4" fill="#C5E1A5" stroke="#fff" strokeWidth="1"/>
+          <circle cx="100" cy="40" r="4" fill="#C5E1A5" stroke="#fff" strokeWidth="1"/>
+          <circle cx="130" cy="20" r="4" fill="#AED581" stroke="#fff" strokeWidth="1"/>
+        </g>
+        <style>
+            {`
+            @import url('https://fonts.googleapis.com/css2?family=Teko:wght@500&display=swap');
+            .text-fiscal {
+                font-family: 'Teko', sans-serif;
+                font-size: 28px;
+                fill: #2E7D32;
+                letter-spacing: 0.05em;
+            }
+            .text-harsh {
+                font-family: 'Teko', sans-serif;
+                font-size: 16px;
+                fill: #2E7D32;
+                letter-spacing: 0.2em;
+            }
+            `}
+        </style>
+        <text x="35" y="95" className="text-fiscal">FISCALFLOW</text>
+        <text x="60" y="115" className="text-harsh">H4RSH</text>
+      </svg>
     </div>
   );
 }

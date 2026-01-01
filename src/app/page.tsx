@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PiggyBank } from "lucide-react";
+import { Logo } from "@/components/logo";
 import { Slider } from "@/components/ui/slider";
 
 export default function AuthPage() {
@@ -32,9 +32,8 @@ export default function AuthPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
-      <div className="flex items-center gap-2 mb-8">
-        <PiggyBank className="h-8 w-8 text-accent" />
-        <span className="text-2xl font-semibold text-foreground">Fiscal Flow</span>
+      <div className="mb-8">
+        <Logo />
       </div>
       <Card className="w-full max-w-sm">
         <CardHeader>

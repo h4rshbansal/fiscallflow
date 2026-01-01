@@ -68,7 +68,7 @@ export default function AppLayout({
         </header>
         <main className="flex-1 p-4 sm:p-6">{children}</main>
         <footer className="p-4 text-center text-sm text-muted-foreground">
-          Made By Harsh Bansal
+          Made by Harsh Bansal
         </footer>
         {isMobile && <BottomNav />}
       </SidebarInset>
