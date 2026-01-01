@@ -14,10 +14,10 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const BudgetSetupAssistantInputSchema = z.object({
-  income: z.number().describe('The user\u2019s monthly income.'),
+  income: z.number().describe('The user’s monthly income.'),
   region: z
     .string() 
-    .describe('The user\u2019s region to tailor spending habits.'),
+    .describe('The user’s region to tailor spending habits.'),
 });
 export type BudgetSetupAssistantInput = z.infer<typeof BudgetSetupAssistantInputSchema>;
 

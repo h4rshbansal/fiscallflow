@@ -65,11 +65,11 @@ export default function BudgetSetupPage() {
           {step === 1 && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="salary">Monthly Salary (USD)</Label>
+                <Label htmlFor="salary">Monthly Salary (INR)</Label>
                 <Input
                   id="salary"
                   type="number"
-                  placeholder="e.g., 5000"
+                  placeholder="e.g., 50000"
                   value={salary}
                   onChange={(e) => setSalary(e.target.value)}
                 />
@@ -88,7 +88,7 @@ export default function BudgetSetupPage() {
                         <span>Allocated:</span>
                         <span>{formatCurrency(totalAllocated * 100)}</span>
                     </div>
-                     <div className={`flex justify-between text-base font-medium ${remainingSalary < 0 ? 'text-destructive' : 'text-green-600'}`}>
+                     <div className={`flex justify-between text-base font-medium ${remainingSalary < 0 ? 'text-destructive' : 'text-red-600'}`}>
                         <span>Remaining:</span>
                         <span>{formatCurrency(remainingSalary * 100)}</span>
                     </div>
