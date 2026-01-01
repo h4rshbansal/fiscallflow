@@ -33,6 +33,7 @@
     "transactions": "Transactions",
     "budgets": "Budgets",
     "reports": "Reports",
+    "goals": "Goals",
     "settings": "Settings"
   },
   "user_nav": {
@@ -183,6 +184,42 @@
         "title": "Success",
         "description": "Category removed."
       }
+    }
+  },
+  "goals": {
+    "title": "Financial Goals",
+    "description": "Set and track your savings goals to stay motivated.",
+    "add_goal_button": "Add New Goal",
+    "create_first_goal_button": "Create Your First Goal",
+    "add_funds_button": "Add Funds",
+    "target_label": "Target",
+    "empty_state": {
+        "title": "No Goals Yet",
+        "description": "Start tracking your savings goals by creating a new one."
+    },
+    "toasts": {
+        "goal_added": {
+            "title": "Goal Added",
+            "description": "Your new financial goal has been created."
+        },
+        "funds_added": {
+            "title": "Funds Added",
+            "description": "Money has been successfully allocated to your goal."
+        }
+    },
+    "add_goal_dialog": {
+        "title": "Create a New Goal",
+        "description": "What are you saving up for?",
+        "name_label": "Goal Name",
+        "name_placeholder": "e.g., New Laptop",
+        "target_amount_label": "Target Amount",
+        "submit_button": "Create Goal"
+    },
+    "add_funds_dialog": {
+        "title": "Add Funds to \"{goalName}\"",
+        "description": "How much would you like to contribute?",
+        "amount_label": "Amount to Add",
+        "submit_button": "Add Funds"
     }
   }
 }

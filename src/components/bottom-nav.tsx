@@ -6,8 +6,8 @@ import {
   LayoutDashboard,
   ArrowLeftRight,
   PiggyBank,
-  BarChart3,
   Settings,
+  Target,
 } from "lucide-react";
 import { useLanguage } from "@/context/language-provider";
 import { cn } from "@/lib/utils";
@@ -33,9 +33,9 @@ export function BottomNav() {
       icon: PiggyBank,
     },
     {
-      href: "/reports",
-      label: t('main_nav.reports'),
-      icon: BarChart3,
+      href: "/goals",
+      label: t('main_nav.goals'),
+      icon: Target,
     },
     {
       href: "/settings",

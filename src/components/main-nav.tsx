@@ -13,6 +13,7 @@ import {
   PiggyBank,
   BarChart3,
   Settings,
+  Target,
 } from "lucide-react";
 import { useLanguage } from "@/context/language-provider";
 
@@ -40,6 +41,11 @@ export function MainNav() {
       href: "/reports",
       label: t('main_nav.reports'),
       icon: BarChart3,
+    },
+    {
+      href: "/goals",
+      label: t('main_nav.goals'),
+      icon: Target,
     },
     {
       href: "/settings",

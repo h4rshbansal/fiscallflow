@@ -21,3 +21,10 @@ export type Budget = {
   categoryName: string;
   amount: number; // in cents
 };
+
+export type Goal = {
+    id: string;
+    name: string;
+    targetAmount: number; // in cents
+    currentAmount: number; // in cents
+};

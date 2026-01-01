@@ -33,6 +33,7 @@
     "transactions": "लेन-देन",
     "budgets": "बजट",
     "reports": "रिपोर्ट",
+    "goals": "लक्ष्य",
     "settings": "सेटिंग्स"
   },
   "user_nav": {
@@ -183,6 +184,42 @@
         "title": "सफलता",
         "description": "श्रेणी हटा दी गई।"
       }
+    }
+  },
+  "goals": {
+    "title": "वित्तीय लक्ष्य",
+    "description": "प्रेरित रहने के लिए अपने बचत लक्ष्यों को निर्धारित और ट्रैक करें।",
+    "add_goal_button": "नया लक्ष्य जोड़ें",
+    "create_first_goal_button": "अपना पहला लक्ष्य बनाएं",
+    "add_funds_button": "धन जोड़ें",
+    "target_label": "लक्ष्य",
+    "empty_state": {
+        "title": "अभी तक कोई लक्ष्य नहीं",
+        "description": "एक नया लक्ष्य बनाकर अपनी बचत लक्ष्यों को ट्रैक करना शुरू करें।"
+    },
+    "toasts": {
+        "goal_added": {
+            "title": "लक्ष्य जोड़ा गया",
+            "description": "आपका नया वित्तीय लक्ष्य बना दिया गया है।"
+        },
+        "funds_added": {
+            "title": "धन जोड़ा गया",
+            "description": "पैसा सफलतापूर्वक आपके लक्ष्य में आवंटित कर दिया गया है।"
+        }
+    },
+    "add_goal_dialog": {
+        "title": "एक नया लक्ष्य बनाएँ",
+        "description": "आप किस लिए बचत कर रहे हैं?",
+        "name_label": "लक्ष्य का नाम",
+        "name_placeholder": "उदा., नया लैपटॉप",
+        "target_amount_label": "लक्ष्य राशि",
+        "submit_button": "लक्ष्य बनाएँ"
+    },
+    "add_funds_dialog": {
+        "title": "\"{goalName}\" में धन जोड़ें",
+        "description": "आप कितना योगदान करना चाहेंगे?",
+        "amount_label": "जोड़ने के लिए राशि",
+        "submit_button": "धन जोड़ें"
     }
   }
 }
