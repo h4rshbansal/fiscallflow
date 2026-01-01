@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { transactions as initialTransactions } from "@/lib/data";
 import type { Transaction } from "@/lib/types";
 import { DataTable } from "./components/data-table";
@@ -67,11 +67,24 @@ const TransactionCard = ({ transaction, onEdit, onDelete }: { transaction: Trans
 
 
 export default function TransactionsPage() {
-  const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { toast } = useToast();
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const savedTransactions = localStorage.getItem('transactions');
+    if (savedTransactions) {
+      setTransactions(JSON.parse(savedTransactions));
+    } else {
+      setTransactions(initialTransactions);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+  }, [transactions]);
 
   const handleAddTransaction = (newTransaction: Omit<Transaction, 'id'>) => {
     const transactionWithId = { ...newTransaction, id: `txn-${Date.now()}`};

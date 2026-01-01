@@ -14,7 +14,7 @@ export type Category = {
   name: string;
   icon: LucideIcon;
   color: string;
-  type: 'income' | 'expense' | 'all';
+  type: 'income' | 'expense';
 };
 
 export type Budget = {

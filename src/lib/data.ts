@@ -15,18 +15,18 @@ import {
 } from 'lucide-react';
 
 export const categories: Category[] = [
-  { id: 'cat-1', name: 'Housing', icon: Home, color: 'hsl(var(--chart-1))' },
-  { id: 'cat-2', name: 'Groceries', icon: ShoppingCart, color: 'hsl(var(--chart-2))' },
-  { id: 'cat-3', name: 'Transportation', icon: Car, color: 'hsl(var(--chart-3))' },
-  { id: 'cat-4', name: 'Healthcare', icon: Heart, color: 'hsl(var(--chart-4))' },
-  { id: 'cat-5', name: 'Entertainment', icon: Film, color: 'hsl(var(--chart-5))' },
-  { id: 'cat-6', name: 'Food', icon: Utensils, color: 'hsl(var(--chart-1))' },
-  { id: 'cat-7', name: 'Utilities', icon: Landmark, color: 'hsl(var(--chart-2))' },
-  { id: 'cat-8', name: 'Savings', icon: PiggyBank, color: 'hsl(var(--chart-3))' },
-  { id: 'cat-9', name: 'Salary', icon: Briefcase, color: 'hsl(var(--chart-4))' },
-  { id: 'cat-10', name: 'Other', icon: GraduationCap, color: 'hsl(var(--chart-5))' },
-  { id: 'cat-11', name: 'Incentives', icon: Award, color: 'hsl(var(--chart-1))' },
-  { id: 'cat-12', name: 'Bonus', icon: CircleDollarSign, color: 'hsl(var(--chart-2))' },
+  { id: 'cat-1', name: 'Housing', icon: Home, color: 'hsl(var(--chart-1))', type: 'expense' },
+  { id: 'cat-2', name: 'Groceries', icon: ShoppingCart, color: 'hsl(var(--chart-2))', type: 'expense' },
+  { id: 'cat-3', name: 'Transportation', icon: Car, color: 'hsl(var(--chart-3))', type: 'expense' },
+  { id: 'cat-4', name: 'Healthcare', icon: Heart, color: 'hsl(var(--chart-4))', type: 'expense' },
+  { id: 'cat-5', name: 'Entertainment', icon: Film, color: 'hsl(var(--chart-5))', type: 'expense' },
+  { id: 'cat-6', name: 'Food', icon: Utensils, color: 'hsl(var(--chart-1))', type: 'expense' },
+  { id: 'cat-7', name: 'Utilities', icon: Landmark, color: 'hsl(var(--chart-2))', type: 'expense' },
+  { id: 'cat-8', name: 'Savings', icon: PiggyBank, color: 'hsl(var(--chart-3))', type: 'expense' },
+  { id: 'cat-9', name: 'Salary', icon: Briefcase, color: 'hsl(var(--chart-4))', type: 'income' },
+  { id: 'cat-10', name: 'Other', icon: GraduationCap, color: 'hsl(var(--chart-5))', type: 'expense' },
+  { id: 'cat-11', name: 'Incentives', icon: Award, color: 'hsl(var(--chart-1))', type: 'income' },
+  { id: 'cat-12', name: 'Bonus', icon: CircleDollarSign, color: 'hsl(var(--chart-2))', type: 'income' },
 ];
 
 export const transactions: Transaction[] = [];
