@@ -25,21 +25,7 @@ export const categories: Category[] = [
   { id: 'cat-10', name: 'Other', icon: GraduationCap, color: 'hsl(var(--chart-5))' },
 ];
 
-export const transactions: Transaction[] = [
-  { id: 'txn-1', date: '2024-07-01T00:00:00.000Z', description: 'Monthly Rent', amount: 150000, category: 'Housing', type: 'expense' },
-  { id: 'txn-2', date: '2024-07-01T00:00:00.000Z', description: 'Gas Bill', amount: 7500, category: 'Utilities', type: 'expense' },
-  { id: 'txn-3', date: '2024-07-02T00:00:00.000Z', description: 'Trader Joe\'s', amount: 12050, category: 'Groceries', type: 'expense' },
-  { id: 'txn-4', date: '2024-07-03T00:00:00.000Z', description: 'Gasoline', amount: 5500, category: 'Transportation', type: 'expense' },
-  { id: 'txn-5', date: '2024-07-05T00:00:00.000Z', description: 'Monthly Salary', amount: 500000, category: 'Salary', type: 'income' },
-  { id: 'txn-6', date: '2024-07-05T00:00:00.000Z', description: 'Starbucks', amount: 575, category: 'Food', type: 'expense' },
-  { id: 'txn-7', date: '2024-07-06T00:00:00.000Z', description: 'Movie Tickets', amount: 3000, category: 'Entertainment', type: 'expense' },
-  { id: 'txn-8', date: '2024-07-08T00:00:00.000Z', description: 'Pharmacy', amount: 2500, category: 'Healthcare', type: 'expense' },
-  { id: 'txn-9', date: '2024-07-10T00:00:00.000Z', description: 'Dinner with friends', amount: 8000, category: 'Food', type: 'expense' },
-  { id: 'txn-10', date: '2024-07-12T00:00:00.000Z', description: 'Whole Foods', amount: 9500, category: 'Groceries', type: 'expense' },
-  { id: 'txn-11', date: '2024-07-15T00:00:00.000Z', description: 'Transfer to Savings', amount: 100000, category: 'Savings', type: 'expense' },
-  { id: 'txn-12', date: '2024-07-18T00:00:00.000Z', description: 'Spotify Subscription', amount: 1099, category: 'Entertainment', type: 'expense' },
-  { id: 'txn-13', date: '2024-07-20T00:00:00.000Z', description: 'New Shoes', amount: 12000, category: 'Other', type: 'expense' },
-];
+export const transactions: Transaction[] = [];
 
 export const budgets: Budget[] = [
   { id: 'bud-1', categoryName: 'Housing', amount: 150000 },
