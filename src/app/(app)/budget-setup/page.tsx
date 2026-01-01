@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { budgets as initialBudgets, categories as initialCategories, transactions as initialTransactions } from '@/lib/data';
+import { budgets as initialBudgets, categories as initialCategories } from '@/lib/data';
 import { formatCurrency } from '@/lib/utils';
 import type { Transaction } from '@/lib/types';
 
@@ -47,10 +47,9 @@ export default function BudgetSetupPage() {
       type: 'income',
     };
     
-    // In a real app, this would be an API call.
-    // For now, we modify the initialTransactions array.
-    // This is not ideal, but works for this demo app structure.
-    initialTransactions.unshift(newTransaction);
+    // For now, we store in localStorage.
+    const existingTransactions = JSON.parse(localStorage.getItem('transactions') || '[]');
+    localStorage.setItem('transactions', JSON.stringify([newTransaction, ...existingTransactions]));
     
     setStep(2);
   };
@@ -64,9 +63,16 @@ export default function BudgetSetupPage() {
       });
       return;
     }
-    // In a real app, you'd save `budgets` to a database.
-    console.log("Saving budgets:", budgets);
+    
+    const formattedBudgets = Object.entries(budgets).map(([categoryName, amount]) => ({
+      id: `bud-${categoryName}-${Date.now()}`,
+      categoryName,
+      amount: Number(amount) * 100, // to cents
+    }));
+    
+    localStorage.setItem('budgets', JSON.stringify(formattedBudgets));
     localStorage.setItem('hasCompletedSetup', 'true');
+
     toast({
       title: "Budget Saved!",
       description: "Your initial budget has been set up.",

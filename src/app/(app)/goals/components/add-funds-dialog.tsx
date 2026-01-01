@@ -21,11 +21,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import type { Goal } from '@/lib/types';
+import type { Goal, Transaction } from '@/lib/types';
 import { useLanguage } from '@/context/language-provider';
 import { formatCurrency } from '@/lib/utils';
-import { transactions } from '@/lib/data';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const formSchema = z.object({
   amount: z.coerce.number().positive({ message: 'Amount must be positive.' }),
@@ -45,6 +44,7 @@ export function AddFundsDialog({
   onSubmit,
 }: AddFundsDialogProps) {
   const { t } = useLanguage();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,7 +52,15 @@ export function AddFundsDialog({
     },
   });
 
+  useEffect(() => {
+    const savedTransactions = localStorage.getItem('transactions');
+    if (savedTransactions) {
+      setTransactions(JSON.parse(savedTransactions));
+    }
+  }, [isOpen]);
+
   const netBalance = useMemo(() => {
+    if (!transactions.length) return 0;
     const totalIncome = transactions
       .filter((t) => t.type === 'income')
       .reduce((acc, t) => acc + t.amount, 0);
@@ -60,7 +68,7 @@ export function AddFundsDialog({
       .filter((t) => t.type === 'expense')
       .reduce((acc, t) => acc + t.amount, 0);
     return totalIncome - totalExpenses;
-  }, []);
+  }, [transactions]);
 
   const handleFormSubmit = (values: z.infer<typeof formSchema>) => {
     onSubmit(goal.id, values.amount * 100);

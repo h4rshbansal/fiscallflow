@@ -26,11 +26,13 @@ import { DollarSign, TrendingUp, Wallet, PiggyBank } from "lucide-react";
 import Link from "next/link";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import type { Transaction, Category, Budget } from "@/lib/types";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [budgets, setBudgets] = useState<Budget[]>([]);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const savedTransactions = localStorage.getItem('transactions');
@@ -153,16 +155,16 @@ export default function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {transactions.slice(0, 5).map((transaction) => (
                 <div key={transaction.id} className="flex items-center justify-between p-2 rounded-md hover:bg-muted/50">
                   <div className="flex flex-col">
-                    <span className="font-medium">{transaction.description}</span>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="font-medium text-sm">{transaction.description}</span>
+                    <span className="text-xs text-muted-foreground">
                       {formatDate(new Date(transaction.date))}
                     </span>
                   </div>
-                  <div className={`font-medium ${transaction.type === 'income' ? 'text-green-500' : transaction.type === 'saving' ? 'text-blue-500' : ''}`}>
+                  <div className={`font-medium text-sm ${transaction.type === 'income' ? 'text-green-500' : transaction.type === 'saving' ? 'text-blue-500' : ''}`}>
                     {transaction.type === 'income' ? '+' : '-'}
                     {formatCurrency(transaction.amount)}
                   </div>

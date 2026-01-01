@@ -96,7 +96,11 @@ export default function TransactionsPage() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('transactions', JSON.stringify(transactions));
+    // Only save to localStorage if transactions state is not the initial empty array,
+    // to prevent overwriting on first load before data is populated.
+    if (transactions.length > 0 || localStorage.getItem('transactions')) {
+      localStorage.setItem('transactions', JSON.stringify(transactions));
+    }
   }, [transactions]);
 
   const handleAddTransaction = (newTransaction: Omit<Transaction, 'id'>) => {
