@@ -24,7 +24,7 @@ import { budgets as initialBudgets, categories as initialCategories, transaction
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { DollarSign, TrendingUp, Wallet, PiggyBank } from "lucide-react";
 import Link from "next/link";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 import type { Transaction, Category, Budget } from "@/lib/types";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -78,38 +78,38 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium">Total Income</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Income</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-lg sm:text-2xl font-bold">{formatCurrency(totalIncome)}</div>
+            <div className="text-2xl font-bold">{formatCurrency(totalIncome)}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium">Total Expenses</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
             <Wallet className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-lg sm:text-2xl font-bold">{formatCurrency(totalExpenses)}</div>
+            <div className="text-2xl font-bold">{formatCurrency(totalExpenses)}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium">Total Savings</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Savings</CardTitle>
             <PiggyBank className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-lg sm:text-2xl font-bold">{formatCurrency(totalSavings)}</div>
+            <div className="text-2xl font-bold">{formatCurrency(totalSavings)}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium">Net Balance</CardTitle>
+            <CardTitle className="text-sm font-medium">Net Balance</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className={`text-lg sm:text-2xl font-bold ${netBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <div className={`text-2xl font-bold ${netBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {formatCurrency(netBalance)}
             </div>
           </CardContent>
@@ -138,6 +138,10 @@ export default function Dashboard() {
                   axisLine={false}
                   tickFormatter={(value) => `₹${value}`}
                 />
+                 <Tooltip
+                    cursor={{fill: 'hsl(var(--muted))'}}
+                    contentStyle={{backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))'}}
+                  />
                 <Bar dataKey="total" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -189,7 +193,7 @@ export default function Dashboard() {
                <Progress value={budget.progress} aria-label={`${budget.categoryName} budget progress`} />
              </div>
           ))}
-           <Button asChild variant="default" className="mt-4 w-full sm:w-auto">
+           <Button asChild variant="default" className="mt-4 w-full sm:w-auto self-start">
               <Link href="/budgets">Manage Budgets</Link>
             </Button>
         </CardContent>

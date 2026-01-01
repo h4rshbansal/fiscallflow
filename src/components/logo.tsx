@@ -9,11 +9,11 @@ export function Logo({ className }: { className?: string }) {
         className="h-8 w-auto"
         fill="currentColor"
       >
-        <g transform="translate(0, 5)">
+        <g transform="translate(10, 5)">
             <g transform="rotate(-10 25 25) translate(0, -5)">
-                <path d="M5 20 Q 15 10, 25 20 T 45 20" stroke="currentColor" strokeWidth="1.5" fill="none" />
-                <rect x="10" y="15" width="35" height="18" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth="2"/>
-                <text x="21" y="29" textAnchor="middle" fontSize="12" fontWeight="bold" fill="currentColor">$</text>
+                <path d="M5 20 Q 15 10, 25 20 T 45 20" stroke="currentColor" strokeWidth="2" fill="none" />
+                <rect x="10" y="15" width="30" height="15" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth="2"/>
+                <text x="25" y="27" textAnchor="middle" fontSize="10" fontWeight="bold" fill="currentColor">$</text>
             </g>
         </g>
         <text
