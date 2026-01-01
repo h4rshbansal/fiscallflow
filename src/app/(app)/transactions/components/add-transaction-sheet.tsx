@@ -40,7 +40,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import type { Transaction } from "@/lib/types";
@@ -56,7 +56,7 @@ const formSchema = z.object({
   }),
   amount: z.coerce.number().positive({ message: "Amount must be positive." }),
   category: z.string().min(1, { message: "Please select a category." }),
-  date: z.date(),
+  date: z.string().min(1, { message: "Please select a date." }),
   type: z.enum(["expense", "income"], {
     required_error: "You need to select a transaction type.",
   }),
@@ -88,12 +88,12 @@ export function AddTransactionSheet({
   const defaultValues = transactionToEdit ? {
     ...transactionToEdit,
     amount: transactionToEdit.amount / 100,
-    date: new Date(transactionToEdit.date),
+    date: format(new Date(transactionToEdit.date), 'yyyy-MM-dd'),
   } : {
     description: "",
     amount: 0,
     type: "expense" as "expense" | "income",
-    date: new Date(),
+    date: format(new Date(), 'yyyy-MM-dd'),
     category: "",
   }
 
@@ -157,7 +157,6 @@ export function AddTransactionSheet({
     const processedValues = {
         ...values,
         amount: values.amount * 100, // convert back to cents
-        date: values.date.toISOString(),
     };
 
     if (transactionToEdit) {
@@ -180,7 +179,7 @@ export function AddTransactionSheet({
       form.reset({
         description: result.description,
         amount: result.amount,
-        date: new Date(result.date),
+        date: format(new Date(result.date), 'yyyy-MM-dd'),
         category: bestMatch,
         type: 'expense'
       });
@@ -234,9 +233,9 @@ export function AddTransactionSheet({
 
   const filteredCategories = categories.filter(c => {
     if (transactionType === 'income') {
-      return c.name === 'Salary';
+      return ['Salary', 'Incentives', 'Bonus'].includes(c.name);
     }
-    return c.name !== 'Salary';
+    return !['Salary', 'Incentives', 'Bonus'].includes(c.name);
   });
 
 
@@ -377,39 +376,11 @@ export function AddTransactionSheet({
                   control={form.control}
                   name="date"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col">
+                    <FormItem>
                       <FormLabel>Transaction Date</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}

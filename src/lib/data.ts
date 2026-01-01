@@ -9,7 +9,9 @@ import {
   Landmark,
   PiggyBank,
   Briefcase,
-  GraduationCap
+  GraduationCap,
+  Award,
+  CircleDollarSign
 } from 'lucide-react';
 
 export const categories: Category[] = [
@@ -23,6 +25,8 @@ export const categories: Category[] = [
   { id: 'cat-8', name: 'Savings', icon: PiggyBank, color: 'hsl(var(--chart-3))' },
   { id: 'cat-9', name: 'Salary', icon: Briefcase, color: 'hsl(var(--chart-4))' },
   { id: 'cat-10', name: 'Other', icon: GraduationCap, color: 'hsl(var(--chart-5))' },
+  { id: 'cat-11', name: 'Incentives', icon: Award, color: 'hsl(var(--chart-1))' },
+  { id: 'cat-12', name: 'Bonus', icon: CircleDollarSign, color: 'hsl(var(--chart-2))' },
 ];
 
 export const transactions: Transaction[] = [];
