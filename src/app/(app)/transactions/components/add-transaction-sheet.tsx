@@ -26,7 +26,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { CalendarIcon, PlusCircle, Camera, X, Upload } from "lucide-react";
+import { PlusCircle, Camera, X, Upload } from "lucide-react";
 import { categories as initialCategories } from "@/lib/data";
 import {
   Select,
@@ -35,14 +35,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format, parseISO } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import type { Transaction, Category } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
@@ -50,6 +42,7 @@ import { extractBillData } from "@/ai/flows/extract-bill-data";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { GraduationCap } from "lucide-react";
+import { format } from "date-fns";
 
 
 const formSchema = z.object({
@@ -261,7 +254,7 @@ export function AddTransactionSheet({
           Add Transaction
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col">
+      <SheetContent className="flex flex-col md:w-auto w-full md:max-w-sm">
         <SheetHeader>
           <SheetTitle>{transactionToEdit ? 'Edit Transaction' : 'Add New Transaction'}</SheetTitle>
           <SheetDescription>
@@ -294,8 +287,8 @@ export function AddTransactionSheet({
         )}
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-6 flex-grow flex flex-col">
-            <div className="flex-grow pr-4 overflow-y-auto space-y-4">
+          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-4 flex-grow flex flex-col">
+            <div className="flex-grow pr-4 -mr-6 overflow-y-auto space-y-4">
                 <FormField
                   control={form.control}
                   name="description"
@@ -464,3 +457,5 @@ export function AddTransactionSheet({
     </>
   );
 }
+
+    
