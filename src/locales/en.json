@@ -1,3 +1,4 @@
+
 {
   "login": {
     "title": "Welcome!",
@@ -226,7 +227,7 @@
         "amount_label": "Amount to Add",
         "submit_button": "Add Funds",
         "leftover_balance_label": "Leftover balance",
-        "add_leftover_button": "Add leftover"
+        "add_leftover_button": "Add amount to reach goal"
     },
     "remove_funds_dialog": {
         "title": "Remove Funds from \"{goalName}\"",

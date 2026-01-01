@@ -141,6 +141,7 @@ export default function GoalsPage() {
                         variant="outline"
                         className="w-full"
                         onClick={() => openAddFundsDialog(goal)}
+                        disabled={goal.currentAmount >= goal.targetAmount}
                     >
                         {t('goals.add_funds_button')}
                     </Button>

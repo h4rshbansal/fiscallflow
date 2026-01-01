@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -23,6 +24,7 @@ import {
 } from '@/components/ui/form';
 import type { Goal } from '@/lib/types';
 import { useLanguage } from '@/context/language-provider';
+import { formatCurrency } from '@/lib/utils';
 
 const formSchema = z.object({
   amount: z.coerce.number().positive({ message: 'Amount must be positive.' }),
@@ -50,11 +52,12 @@ export function RemoveFundsDialog({
   });
 
   const handleFormSubmit = (values: z.infer<typeof formSchema>) => {
-    if (values.amount * 100 > goal.currentAmount) {
+    const amountInCents = values.amount * 100;
+    if (amountInCents > goal.currentAmount) {
         form.setError('amount', { message: t('goals.remove_funds_dialog.error_insufficient_funds') });
         return;
     }
-    onSubmit(goal.id, values.amount * 100);
+    onSubmit(goal.id, amountInCents);
     onOpenChange(false);
     form.reset();
   };
@@ -65,7 +68,7 @@ export function RemoveFundsDialog({
         <DialogHeader>
           <DialogTitle>{t('goals.remove_funds_dialog.title', { goalName: goal.name })}</DialogTitle>
           <DialogDescription>
-            {t('goals.remove_funds_dialog.description', { currentAmount: goal.currentAmount / 100 })}
+            {t('goals.remove_funds_dialog.description', { currentAmount: formatCurrency(goal.currentAmount) })}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

@@ -1,3 +1,4 @@
+
 {
   "login": {
     "title": "आपका स्वागत है!",
@@ -111,7 +112,7 @@
   },
   "budgets": {
     "title": "बजट",
-    "description": "अपनी मासिक खर्च सीमाएं प्रबंधित करें।",
+    "description": " अपनी मासिक खर्च सीमाएं प्रबंधित करें।",
     "ai_button": "AI सिफारिशें प्राप्त करें",
     "ai_loading": "विश्लेषण हो रहा है...",
     "card_title": "मासिक बजट",
@@ -226,7 +227,7 @@
         "amount_label": "जोड़ने के लिए राशि",
         "submit_button": "धन जोड़ें",
         "leftover_balance_label": "बची हुई शेष राशि",
-        "add_leftover_button": "बची हुई राशि जोड़ें"
+        "add_leftover_button": "लक्ष्य तक पहुँचने के लिए राशि जोड़ें"
     },
     "remove_funds_dialog": {
         "title": "\"{goalName}\" से धन निकालें",

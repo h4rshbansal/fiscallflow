@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -67,18 +68,31 @@ export function AddFundsDialog({
     const totalExpenses = transactions
       .filter((t) => t.type === 'expense')
       .reduce((acc, t) => acc + t.amount, 0);
-    return totalIncome - totalExpenses;
+    const totalSavings = transactions
+      .filter((t) => t.type === 'saving')
+      .reduce((acc, t) => acc + t.amount, 0);
+    return totalIncome - totalExpenses - totalSavings;
   }, [transactions]);
 
+  const remainingAmountForGoal = goal.targetAmount - goal.currentAmount;
+
   const handleFormSubmit = (values: z.infer<typeof formSchema>) => {
-    onSubmit(goal.id, values.amount * 100);
+    const amountInCents = values.amount * 100;
+    if (amountInCents > remainingAmountForGoal) {
+      form.setError('amount', {
+        message: `Cannot add more than the remaining amount of ${formatCurrency(remainingAmountForGoal)}.`,
+      });
+      return;
+    }
+    onSubmit(goal.id, amountInCents);
     onOpenChange(false);
     form.reset();
   };
 
   const setLeftover = () => {
-    const leftoverAmount = netBalance > 0 ? netBalance / 100 : 0;
-    form.setValue('amount', leftoverAmount);
+    const leftoverInCents = netBalance > 0 ? netBalance : 0;
+    const amountToAdd = Math.min(leftoverInCents, remainingAmountForGoal);
+    form.setValue('amount', amountToAdd / 100);
   };
 
   return (
@@ -87,7 +101,7 @@ export function AddFundsDialog({
         <DialogHeader>
           <DialogTitle>{t('goals.add_funds_dialog.title', { goalName: goal.name })}</DialogTitle>
           <DialogDescription>
-            {t('goals.add_funds_dialog.description')}
+            {t('goals.add_funds_dialog.description')} {formatCurrency(remainingAmountForGoal)} still needed.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
