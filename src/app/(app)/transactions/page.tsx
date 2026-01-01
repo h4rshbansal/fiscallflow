@@ -21,19 +21,19 @@ const TransactionCard = ({ transaction, onEdit, onDelete }: { transaction: Trans
   const category = categories.find(c => c.name === transaction.category);
   return (
     <Card>
-      <CardContent className="p-4">
-        <div className="flex justify-between items-start">
+      <CardContent className="p-3">
+        <div className="flex justify-between items-start gap-2">
           <div className="flex-1 space-y-1">
-            <p className="font-medium">{transaction.description}</p>
-            <p className="text-sm text-muted-foreground">{formatDate(new Date(transaction.date))}</p>
+            <p className="font-medium text-sm">{transaction.description}</p>
+            <p className="text-xs text-muted-foreground">{formatDate(new Date(transaction.date))}</p>
              {category && (
-                <Badge variant="outline" style={{ borderColor: category.color, color: category.color }} className="w-min">
+                <Badge variant="outline" style={{ borderColor: category.color, color: category.color }} className="w-min text-xs">
                   {category.name}
                 </Badge>
               )}
           </div>
           <div className="flex flex-col items-end">
-             <p className={`font-medium text-lg ${transaction.type === 'income' ? 'text-emerald-500' : 'text-destructive'}`}>
+             <p className={`font-medium text-base ${transaction.type === 'income' ? 'text-emerald-500' : 'text-destructive'}`}>
                 {transaction.type === 'income' ? '+' : '-'}
                 {formatCurrency(transaction.amount)}
             </p>
@@ -174,7 +174,7 @@ export default function TransactionsPage() {
         </CardHeader>
         <CardContent>
           {isMobile ? (
-             <div className="space-y-4">
+             <div className="space-y-3">
               {transactions.map(t => (
                 <TransactionCard key={t.id} transaction={t} onEdit={openEditSheet} onDelete={handleDeleteTransaction} />
               ))}
@@ -192,5 +192,3 @@ export default function TransactionsPage() {
     </div>
   )
 }
-
-    
