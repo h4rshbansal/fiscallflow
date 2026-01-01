@@ -122,34 +122,21 @@ export default function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Description</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {transactions.slice(0, 5).map((transaction) => (
-                    <TableRow key={transaction.id}>
-                      <TableCell>
-                        <div className="font-medium">{transaction.description}</div>
-                        <div className="text-sm text-muted-foreground md:hidden">
-                          {formatDate(new Date(transaction.date))}
-                        </div>
-                         <div className="hidden text-sm text-muted-foreground md:block">
-                          {formatDate(new Date(transaction.date))}
-                        </div>
-                      </TableCell>
-                      <TableCell className={`text-right ${transaction.type === 'income' ? 'text-green-500' : ''}`}>
-                        {transaction.type === 'income' ? '+' : '-'}
-                        {formatCurrency(transaction.amount)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+            <div className="space-y-4">
+              {transactions.slice(0, 5).map((transaction) => (
+                <div key={transaction.id} className="flex items-center justify-between p-2 rounded-md hover:bg-muted/50">
+                  <div className="flex flex-col">
+                    <span className="font-medium">{transaction.description}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {formatDate(new Date(transaction.date))}
+                    </span>
+                  </div>
+                  <div className={`font-medium ${transaction.type === 'income' ? 'text-green-500' : ''}`}>
+                    {transaction.type === 'income' ? '+' : '-'}
+                    {formatCurrency(transaction.amount)}
+                  </div>
+                </div>
+              ))}
             </div>
              <Button asChild variant="outline" className="mt-4 w-full">
               <Link href="/transactions">View All Transactions</Link>
