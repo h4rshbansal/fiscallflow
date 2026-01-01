@@ -29,32 +29,26 @@ export default function AuthPage() {
     }
     setError("");
     
-    const hasCompletedSetup = localStorage.getItem('hasCompletedSetup');
+    // Check if it's a first-time login
+    const isFirstTime = !localStorage.getItem('userName');
     
-    // Only save user details and initial amount if it's the first time
-    if (!hasCompletedSetup) {
-      localStorage.setItem("userName", name);
-      localStorage.setItem("userAge", age[0].toString());
+    localStorage.setItem("userName", name);
+    localStorage.setItem("userAge", age[0].toString());
 
-      if (amount && Number(amount) > 0) {
-        const initialTransaction: Transaction = {
-          id: `txn-${Date.now()}`,
-          date: new Date().toISOString(),
-          description: "Initial Balance",
-          amount: Number(amount) * 100, // in cents
-          category: "Salary",
-          type: "income",
-        };
-        const existingTransactions = JSON.parse(localStorage.getItem('transactions') || '[]');
-        localStorage.setItem('transactions', JSON.stringify([initialTransaction, ...existingTransactions]));
-      }
+    if (isFirstTime && amount && Number(amount) > 0) {
+      const initialTransaction: Transaction = {
+        id: `txn-${Date.now()}`,
+        date: new Date().toISOString(),
+        description: "Initial Balance",
+        amount: Number(amount) * 100, // in cents
+        category: "Salary",
+        type: "income",
+      };
+      const existingTransactions = JSON.parse(localStorage.getItem('transactions') || '[]');
+      localStorage.setItem('transactions', JSON.stringify([initialTransaction, ...existingTransactions]));
     }
-
-    if (!hasCompletedSetup) {
-        router.push("/budget-setup");
-    } else {
-        router.push("/dashboard");
-    }
+    
+    router.push("/dashboard");
   };
 
   const hasCompletedSetup = typeof window !== 'undefined' ? localStorage.getItem('hasCompletedSetup') : null;
@@ -91,18 +85,18 @@ export default function AuthPage() {
                 onValueChange={setAge}
               />
             </div>
-            {!hasCompletedSetup && (
-               <div className="space-y-2">
-                <Label htmlFor="amount">Initial Amount (Optional)</Label>
-                <Input
-                  id="amount"
-                  type="number"
-                  placeholder="Enter initial balance"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                />
-              </div>
-            )}
+            
+             <div className="space-y-2">
+              <Label htmlFor="amount">Initial Amount (Optional)</Label>
+              <Input
+                id="amount"
+                type="number"
+                placeholder="Enter initial balance"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+            </div>
+            
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button onClick={handleLogin} className="w-full">
               Continue

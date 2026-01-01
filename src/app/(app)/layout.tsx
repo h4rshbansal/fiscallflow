@@ -34,11 +34,6 @@ export default function AppLayout({
       router.push('/auth');
       return;
     }
-    const hasCompletedSetup = localStorage.getItem('hasCompletedSetup');
-    if (!hasCompletedSetup && pathname !== '/budget-setup') {
-      router.push('/budget-setup');
-      return;
-    }
     // Simulate a brief loading period to allow data to populate and show skeleton
     const timer = setTimeout(() => {
         setIsLoading(false);
