@@ -265,7 +265,7 @@ export function AddTransactionSheet({
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleFormSubmit)} className="flex h-full flex-col">
-            <div className="flex-1 space-y-4 overflow-y-auto pr-4 -mr-6 pb-4">
+            <div className="flex-1 space-y-4 overflow-y-auto pb-4">
                 <div className="py-4 grid grid-cols-2 gap-2">
                     <Button type="button" variant="outline" className="w-full" onClick={() => fileInputRef.current?.click()}>
                         <Upload className="mr-2 h-4 w-4" />
@@ -458,4 +458,3 @@ export function AddTransactionSheet({
     </>
   );
 }
-
