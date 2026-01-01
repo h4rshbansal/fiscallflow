@@ -60,19 +60,8 @@ export function Logo({ className }: { className?: string }) {
             fill="#2E7D32"
           />
         </g>
-        <g transform="translate(10, 20) scale(0.8)">
-            <path d="M45.75 8.59L66.44 8.59V13.39L51.35 13.39V16.59L63.24 16.59V30.19L51.35 30.19V33.39L66.44 33.39V38.19L45.75 38.19V8.59Z" fill="url(#grad)" stroke="#4CAF50" strokeWidth="1.5"/>
-            <path d="M45.75 45L45.75 60L55.75 75L45.75 90L45.75 105" stroke="#4CAF50" strokeWidth="1.5" fill="none"/>
-            <path d="M35.75 105L65.75 105" stroke="#4CAF50" strokeWidth="1.5" fill="none"/>
-            <defs>
-                <linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style={{stopColor: '#4CAF50', stopOpacity: 1}} />
-                <stop offset="100%" style={{stopColor: '#2E7D32', stopOpacity: 1}} />
-                </linearGradient>
-            </defs>
-        </g>
-         <g transform="translate(20, 0)">
-          <path d="M40 50 L70 30 L100 40 L130 20" stroke="#AED581" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        <g transform="translate(20, 0)">
+          <path d="M40 50 L70 30 L100 40 L130 20" stroke="#AED581" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
           <circle cx="40" cy="50" r="4" fill="#AED581" stroke="#fff" strokeWidth="1"/>
           <circle cx="70" cy="30" r="4" fill="#C5E1A5" stroke="#fff" strokeWidth="1"/>
           <circle cx="100" cy="40" r="4" fill="#C5E1A5" stroke="#fff" strokeWidth="1"/>

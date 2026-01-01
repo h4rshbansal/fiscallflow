@@ -212,7 +212,7 @@ export default function TransactionsPage() {
         </CardHeader>
         <CardContent>
           {isMobile ? (
-             <div className="space-y-3">
+             <div className="space-y-2">
               {transactions.map(t => (
                 <TransactionCard key={t.id} transaction={t} onEdit={openEditSheet} onDelete={handleDeleteTransaction} />
               ))}
