@@ -13,7 +13,7 @@ import {
 import { Progress } from '@/components/ui/progress';
 import { formatCurrency } from '@/lib/utils';
 import { goals as initialGoals } from '@/lib/goals-data';
-import type { Goal } from '@/lib/types';
+import type { Goal, Transaction } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { PlusCircle, Target, CheckCircle2 } from 'lucide-react';
 import { AddGoalDialog } from './components/add-goal-dialog';
@@ -23,6 +23,7 @@ import { useLanguage } from '@/context/language-provider';
 
 export default function GoalsPage() {
   const [goals, setGoals] = useState<Goal[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isAddGoalOpen, setIsAddGoalOpen] = useState(false);
   const [isAddFundsOpen, setIsAddFundsOpen] = useState(false);
   const [isRemoveFundsOpen, setIsRemoveFundsOpen] = useState(false);
@@ -37,6 +38,11 @@ export default function GoalsPage() {
     } else {
       setGoals(initialGoals);
     }
+    
+    const savedTransactions = localStorage.getItem('transactions');
+    if (savedTransactions) {
+      setTransactions(JSON.parse(savedTransactions));
+    }
   }, []);
 
   useEffect(() => {
@@ -45,6 +51,12 @@ export default function GoalsPage() {
        localStorage.setItem('goals', JSON.stringify(goals));
     }
   }, [goals]);
+
+  useEffect(() => {
+    if (transactions.length > 0 || localStorage.getItem('transactions')) {
+       localStorage.setItem('transactions', JSON.stringify(transactions));
+    }
+  }, [transactions]);
 
   const handleAddGoal = (newGoal: Omit<Goal, 'id' | 'currentAmount' | 'status'>) => {
     const goalWithId: Goal = {
@@ -58,6 +70,9 @@ export default function GoalsPage() {
   };
 
   const handleAddFunds = (goalId: string, amount: number) => {
+    const goal = goals.find(g => g.id === goalId);
+    if (!goal) return;
+
     setGoals((prev) =>
       prev.map((g) =>
         g.id === goalId
@@ -65,10 +80,24 @@ export default function GoalsPage() {
           : g
       )
     );
+
+    const newTransaction: Transaction = {
+      id: `txn-goal-add-${Date.now()}`,
+      date: new Date().toISOString(),
+      description: `Contribution to "${goal.name}"`,
+      amount: amount,
+      category: 'Savings',
+      type: 'saving'
+    };
+    setTransactions(prev => [newTransaction, ...prev]);
+
     toast({ title: t('goals.toasts.funds_added.title'), description: t('goals.toasts.funds_added.description') });
   };
   
   const handleRemoveFunds = (goalId: string, amount: number) => {
+    const goal = goals.find(g => g.id === goalId);
+    if (!goal) return;
+
     setGoals((prev) =>
       prev.map((g) =>
         g.id === goalId
@@ -76,6 +105,17 @@ export default function GoalsPage() {
           : g
       )
     );
+    
+    const newTransaction: Transaction = {
+      id: `txn-goal-remove-${Date.now()}`,
+      date: new Date().toISOString(),
+      description: `Withdrawal from "${goal.name}"`,
+      amount: amount,
+      category: 'Other',
+      type: 'income'
+    };
+    setTransactions(prev => [newTransaction, ...prev]);
+
     toast({ title: t('goals.toasts.funds_removed.title'), description: t('goals.toasts.funds_removed.description') });
   };
 
