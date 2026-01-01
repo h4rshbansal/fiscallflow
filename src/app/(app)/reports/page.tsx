@@ -1,12 +1,15 @@
+
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { transactions, categories as allCategories } from "@/lib/data";
+import { transactions as initialTransactions, categories as initialCategories } from "@/lib/data";
 import { formatCurrency } from "@/lib/utils";
 import { Bar, BarChart, CartesianGrid, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend, Cell } from "recharts";
 import { subMonths, startOfMonth, endOfMonth } from 'date-fns';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import type { Transaction, Category } from "@/lib/types";
+import { GraduationCap } from 'lucide-react';
 
 const dateRanges = [
   { value: 'this-month', label: 'This Month' },
@@ -16,6 +19,21 @@ const dateRanges = [
 
 export default function ReportsPage() {
   const [dateRange, setDateRange] = useState('this-month');
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const savedTransactions = localStorage.getItem('transactions');
+    setTransactions(savedTransactions ? JSON.parse(savedTransactions) : initialTransactions);
+
+    const savedCategories = localStorage.getItem('categories');
+    if (savedCategories) {
+      const parsedCategories = JSON.parse(savedCategories).map((cat: any) => ({...cat, icon: GraduationCap}));
+      setAllCategories(parsedCategories);
+    } else {
+      setAllCategories(initialCategories);
+    }
+  }, []);
 
   const getFilteredTransactions = () => {
     const now = new Date();
@@ -39,7 +57,7 @@ export default function ReportsPage() {
   const filteredTransactions = getFilteredTransactions();
 
   const spendingByCategory = allCategories
-    .filter(c => c.name !== 'Salary' && c.name !== 'Savings')
+    .filter(c => c.type === 'expense')
     .map(category => {
       const total = filteredTransactions
         .filter(t => t.category === category.name && t.type === 'expense')

@@ -1,23 +1,36 @@
 
+
 "use client";
 
 import { useState, useEffect } from "react";
 import { transactions as initialTransactions } from "@/lib/data";
-import type { Transaction } from "@/lib/types";
+import type { Transaction, Category } from "@/lib/types";
 import { DataTable } from "./components/data-table";
 import { getColumns } from "./components/columns";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { AddTransactionSheet } from "./components/add-transaction-sheet";
 import { useToast } from "@/hooks/use-toast";
-import { DollarSign, Wallet, TrendingUp, MoreHorizontal } from "lucide-react";
+import { DollarSign, Wallet, TrendingUp, MoreHorizontal, GraduationCap } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Badge } from "@/components/ui/badge";
-import { categories } from "@/lib/data";
+import { categories as initialCategories } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const TransactionCard = ({ transaction, onEdit, onDelete }: { transaction: Transaction, onEdit: (t: Transaction) => void, onDelete: (id: string) => void }) => {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const savedCategories = localStorage.getItem('categories');
+    if (savedCategories) {
+      const parsedCategories = JSON.parse(savedCategories).map((cat: any) => ({...cat, icon: GraduationCap}));
+      setCategories(parsedCategories);
+    } else {
+      setCategories(initialCategories);
+    }
+  }, []);
+  
   const category = categories.find(c => c.name === transaction.category);
   return (
     <Card>
@@ -33,7 +46,7 @@ const TransactionCard = ({ transaction, onEdit, onDelete }: { transaction: Trans
               )}
           </div>
           <div className="flex flex-col items-end">
-             <p className={`font-medium text-base ${transaction.type === 'income' ? 'text-emerald-500' : 'text-destructive'}`}>
+             <p className={`font-medium text-sm ${transaction.type === 'income' ? 'text-emerald-500' : 'text-destructive'}`}>
                 {transaction.type === 'income' ? '+' : '-'}
                 {formatCurrency(transaction.amount)}
             </p>
@@ -88,12 +101,12 @@ export default function TransactionsPage() {
 
   const handleAddTransaction = (newTransaction: Omit<Transaction, 'id'>) => {
     const transactionWithId = { ...newTransaction, id: `txn-${Date.now()}`};
-    setTransactions(prev => [transactionWithId, ...prev]);
+    setTransactions(prev => [transactionWithId, ...prev].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
     toast({ title: "Success", description: "Transaction added successfully." });
   };
   
   const handleEditTransaction = (updatedTransaction: Transaction) => {
-    setTransactions(prev => prev.map(t => t.id === updatedTransaction.id ? updatedTransaction : t));
+    setTransactions(prev => prev.map(t => t.id === updatedTransaction.id ? updatedTransaction : t).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
     toast({ title: "Success", description: "Transaction updated successfully." });
     setEditingTransaction(null);
   };

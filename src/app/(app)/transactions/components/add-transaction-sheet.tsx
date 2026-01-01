@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useEffect, useState, useRef } from "react";
@@ -26,7 +27,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { CalendarIcon, PlusCircle, Camera, X, Upload } from "lucide-react";
-import { categories } from "@/lib/data";
+import { categories as initialCategories } from "@/lib/data";
 import {
   Select,
   SelectContent,
@@ -43,11 +44,12 @@ import { cn } from "@/lib/utils";
 import { format, parseISO } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import type { Transaction } from "@/lib/types";
+import type { Transaction, Category } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { extractBillData } from "@/ai/flows/extract-bill-data";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { GraduationCap } from "lucide-react";
 
 
 const formSchema = z.object({
@@ -84,6 +86,17 @@ export function AddTransactionSheet({
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const savedCategories = localStorage.getItem('categories');
+    if (savedCategories) {
+      const parsedCategories = JSON.parse(savedCategories).map((cat: any) => ({...cat, icon: GraduationCap}));
+      setCategories(parsedCategories);
+    } else {
+      setCategories(initialCategories);
+    }
+  }, [isOpen]);
 
   const defaultValues = transactionToEdit ? {
     ...transactionToEdit,
@@ -232,10 +245,7 @@ export function AddTransactionSheet({
   }
 
   const filteredCategories = categories.filter(c => {
-    if (transactionType === 'income') {
-      return ['Salary', 'Incentives', 'Bonus'].includes(c.name);
-    }
-    return !['Salary', 'Incentives', 'Bonus'].includes(c.name);
+      return c.type === transactionType;
   });
 
 

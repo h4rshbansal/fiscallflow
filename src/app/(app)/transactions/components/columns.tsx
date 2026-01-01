@@ -1,18 +1,34 @@
+
 "use client"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { categories } from "@/lib/data"
-import type { Transaction } from "@/lib/types"
+import { categories as initialCategories } from "@/lib/data"
+import type { Transaction, Category } from "@/lib/types"
 import { formatCurrency, formatDate } from "@/lib/utils"
 import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal, GraduationCap } from "lucide-react"
+import { useEffect, useState } from "react"
 
 export const getColumns = (
     onEdit: (transaction: Transaction) => void,
     onDelete: (id: string) => void
-  ): ColumnDef<Transaction>[] => [
+  ): ColumnDef<Transaction>[] => {
+  
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const savedCategories = localStorage.getItem('categories');
+    if (savedCategories) {
+      const parsedCategories = JSON.parse(savedCategories).map((cat: any) => ({...cat, icon: GraduationCap}));
+      setCategories(parsedCategories);
+    } else {
+      setCategories(initialCategories);
+    }
+  }, []);
+  
+  return [
   {
     accessorKey: "date",
     header: ({ column }) => {
@@ -107,3 +123,4 @@ export const getColumns = (
     },
   },
 ]
+}

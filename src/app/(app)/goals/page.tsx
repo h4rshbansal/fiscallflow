@@ -1,6 +1,7 @@
+
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -21,13 +22,29 @@ import { RemoveFundsDialog } from './components/remove-funds-dialog';
 import { useLanguage } from '@/context/language-provider';
 
 export default function GoalsPage() {
-  const [goals, setGoals] = useState<Goal[]>(initialGoals);
+  const [goals, setGoals] = useState<Goal[]>([]);
   const [isAddGoalOpen, setIsAddGoalOpen] = useState(false);
   const [isAddFundsOpen, setIsAddFundsOpen] = useState(false);
   const [isRemoveFundsOpen, setIsRemoveFundsOpen] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
   const { toast } = useToast();
   const { t } = useLanguage();
+
+  useEffect(() => {
+    const savedGoals = localStorage.getItem('goals');
+    if (savedGoals) {
+      setGoals(JSON.parse(savedGoals));
+    } else {
+      setGoals(initialGoals);
+    }
+  }, []);
+
+  useEffect(() => {
+    // We don't want to save the initial empty array
+    if (goals.length > 0 || localStorage.getItem('goals')) {
+       localStorage.setItem('goals', JSON.stringify(goals));
+    }
+  }, [goals]);
 
   const handleAddGoal = (newGoal: Omit<Goal, 'id' | 'currentAmount'>) => {
     const goalWithId: Goal = {

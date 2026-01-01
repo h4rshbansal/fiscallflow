@@ -1,20 +1,46 @@
+
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { budgets as initialBudgets, transactions } from "@/lib/data";
+import { budgets as initialBudgets, transactions as initialTransactionsData } from "@/lib/data";
 import { formatCurrency } from "@/lib/utils";
 import { Wand2 } from "lucide-react";
 import { getBudgetRecommendations } from "@/ai/flows/budget-recommendations";
 import { useToast } from "@/hooks/use-toast";
+import type { Budget, Transaction } from "@/lib/types";
 
 export default function BudgetsPage() {
-  const [budgets, setBudgets] = useState(initialBudgets);
+  const [budgets, setBudgets] = useState<Budget[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [recommendations, setRecommendations] = useState<Record<string, string> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const savedBudgets = localStorage.getItem('budgets');
+    if (savedBudgets) {
+      setBudgets(JSON.parse(savedBudgets));
+    } else {
+      setBudgets(initialBudgets);
+    }
+    
+    const savedTransactions = localStorage.getItem('transactions');
+    if (savedTransactions) {
+      setTransactions(JSON.parse(savedTransactions));
+    } else {
+      setTransactions(initialTransactionsData);
+    }
+  }, []);
+
+  useEffect(() => {
+    if(budgets.length > 0) {
+      localStorage.setItem('budgets', JSON.stringify(budgets));
+    }
+  }, [budgets]);
+
 
   const handleBudgetChange = (categoryName: string, newAmount: number) => {
     setBudgets(currentBudgets => 

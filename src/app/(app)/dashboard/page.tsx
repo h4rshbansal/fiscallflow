@@ -1,5 +1,7 @@
+
 "use client";
 
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,13 +20,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { budgets, categories, transactions } from "@/lib/data";
+import { budgets as initialBudgets, categories as initialCategories, transactions as initialTransactions } from "@/lib/data";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { DollarSign, TrendingUp, Wallet } from "lucide-react";
 import Link from "next/link";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import type { Transaction, Category, Budget } from "@/lib/types";
 
 export default function Dashboard() {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [budgets, setBudgets] = useState<Budget[]>([]);
+
+  useEffect(() => {
+    const savedTransactions = localStorage.getItem('transactions');
+    setTransactions(savedTransactions ? JSON.parse(savedTransactions) : initialTransactions);
+
+    const savedCategories = localStorage.getItem('categories');
+    setCategories(savedCategories ? JSON.parse(savedCategories) : initialCategories);
+
+    const savedBudgets = localStorage.getItem('budgets');
+    setBudgets(savedBudgets ? JSON.parse(savedBudgets) : initialBudgets);
+  }, []);
+
   const totalIncome = transactions
     .filter((t) => t.type === 'income')
     .reduce((acc, t) => acc + t.amount, 0);
@@ -34,7 +52,7 @@ export default function Dashboard() {
   const netBalance = totalIncome - totalExpenses;
 
   const spendingByCategory = categories
-    .filter(c => c.name !== 'Salary' && c.name !== 'Savings')
+    .filter(c => c.type === 'expense' && c.name !== 'Savings')
     .map(category => {
       const total = transactions
         .filter(t => t.category === category.name && t.type === 'expense')
@@ -46,7 +64,7 @@ export default function Dashboard() {
     const spent = transactions
       .filter(t => t.category === budget.categoryName && t.type === 'expense')
       .reduce((acc, t) => acc + t.amount, 0);
-    const progress = (spent / budget.amount) * 100;
+    const progress = budget.amount > 0 ? (spent / budget.amount) * 100 : 0;
     return { ...budget, spent, progress };
   });
 
