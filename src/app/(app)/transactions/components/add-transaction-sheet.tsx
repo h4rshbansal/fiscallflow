@@ -24,7 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { CalendarIcon, PlusCircle, Camera, X } from "lucide-react";
+import { CalendarIcon, PlusCircle, Camera, X, Upload } from "lucide-react";
 import { categories } from "@/lib/data";
 import {
   Select,
@@ -82,6 +82,7 @@ export function AddTransactionSheet({
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const defaultValues = transactionToEdit ? {
     ...transactionToEdit,
@@ -159,24 +160,11 @@ export function AddTransactionSheet({
     onOpenChange(false);
   };
 
-  const handleCaptureAndScan = async () => {
-    if (!videoRef.current || !canvasRef.current) return;
-    
+  const processBill = async (imageDataUri: string) => {
     setIsScanning(true);
-
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const context = canvas.getContext('2d');
-    context?.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    const imageDataUri = canvas.toDataURL('image/jpeg');
-
     try {
       const result = await extractBillData({ imageDataUri });
 
-      // Find the closest matching category
       const categoryNames = categories.map(c => c.name.toLowerCase());
       const suggestedCategoryLower = result.category.toLowerCase();
       let bestMatch = categories.find(c => c.name.toLowerCase() === suggestedCategoryLower)?.name || 'Other';
@@ -204,7 +192,37 @@ export function AddTransactionSheet({
       setIsScanning(false);
       setIsCameraOpen(false);
     }
+  }
+
+  const handleCaptureAndScan = async () => {
+    if (!videoRef.current || !canvasRef.current) return;
+    
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+    context?.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const imageDataUri = canvas.toDataURL('image/jpeg');
+    processBill(imageDataUri);
   };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const imageDataUri = e.target?.result as string;
+      if (imageDataUri) {
+        processBill(imageDataUri);
+      }
+    };
+    reader.readAsDataURL(file);
+    // Reset file input
+    event.target.value = '';
+  }
 
 
   return (
@@ -226,12 +244,31 @@ export function AddTransactionSheet({
             {transactionToEdit ? 'Update the details of your transaction.' : 'Enter the details of your new transaction below.'}
           </SheetDescription>
         </SheetHeader>
-        <div className="py-4">
+        <div className="py-4 grid grid-cols-2 gap-2">
+            <Button variant="outline" className="w-full" onClick={() => fileInputRef.current?.click()}>
+                <Upload className="mr-2 h-4 w-4" />
+                Upload a Bill
+            </Button>
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              className="hidden" 
+              accept="image/*"
+              onChange={handleFileChange}
+            />
             <Button variant="outline" className="w-full" onClick={() => setIsCameraOpen(true)}>
                 <Camera className="mr-2 h-4 w-4" />
                 Scan a Bill
             </Button>
         </div>
+        
+        {(isScanning && !isCameraOpen) && (
+             <div className="flex flex-col items-center justify-center gap-4 py-8">
+                <Skeleton className="h-12 w-12 rounded-full" />
+                <p className="text-muted-foreground text-lg">Analyzing your bill...</p>
+            </div>
+        )}
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-6 flex-grow flex flex-col">
             <div className="flex-grow pr-4 overflow-y-auto space-y-4">
@@ -253,7 +290,7 @@ export function AddTransactionSheet({
                   name="amount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Amount</FormLabel>
+                      <FormLabel>Amount (INR)</FormLabel>
                       <FormControl>
                         <Input type="number" placeholder="0.00" {...field} />
                       </FormControl>
@@ -364,7 +401,7 @@ export function AddTransactionSheet({
                 />
             </div>
             <SheetFooter>
-                <Button type="submit">{transactionToEdit ? 'Save Changes' : 'Save Transaction'}</Button>
+                <Button type="submit" disabled={isScanning}>{transactionToEdit ? 'Save Changes' : 'Save Transaction'}</Button>
             </SheetFooter>
           </form>
         </Form>
