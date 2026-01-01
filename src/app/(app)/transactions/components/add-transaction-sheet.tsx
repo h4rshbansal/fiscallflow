@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { useEffect, useState, useRef } from "react";
@@ -263,34 +262,34 @@ export function AddTransactionSheet({
             {transactionToEdit ? 'Update the details of your transaction.' : 'Enter the details of your new transaction below.'}
           </SheetDescription>
         </SheetHeader>
-        <div className="py-4 grid grid-cols-2 gap-2">
-            <Button variant="outline" className="w-full" onClick={() => fileInputRef.current?.click()}>
-                <Upload className="mr-2 h-4 w-4" />
-                Upload a Bill
-            </Button>
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              className="hidden" 
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-            <Button variant="outline" className="w-full" onClick={() => setIsCameraOpen(true)}>
-                <Camera className="mr-2 h-4 w-4" />
-                Scan a Bill
-            </Button>
-        </div>
         
-        {(isScanning && !isCameraOpen) && (
-             <div className="flex flex-col items-center justify-center gap-4 py-8">
-                <Skeleton className="h-12 w-12 rounded-full" />
-                <p className="text-muted-foreground text-lg">Analyzing your bill...</p>
-            </div>
-        )}
-
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="flex-grow flex flex-col">
-            <div className="flex-grow pr-4 -mr-6 overflow-y-auto space-y-4">
+          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="flex h-full flex-col">
+            <div className="flex-1 space-y-4 overflow-y-auto pr-4 -mr-6 pb-4">
+                <div className="py-4 grid grid-cols-2 gap-2">
+                    <Button type="button" variant="outline" className="w-full" onClick={() => fileInputRef.current?.click()}>
+                        <Upload className="mr-2 h-4 w-4" />
+                        Upload a Bill
+                    </Button>
+                    <input 
+                      type="file" 
+                      ref={fileInputRef} 
+                      className="hidden" 
+                      accept="image/*"
+                      onChange={handleFileChange}
+                    />
+                    <Button type="button" variant="outline" className="w-full" onClick={() => setIsCameraOpen(true)}>
+                        <Camera className="mr-2 h-4 w-4" />
+                        Scan a Bill
+                    </Button>
+                </div>
+                
+                {(isScanning && !isCameraOpen) && (
+                    <div className="flex flex-col items-center justify-center gap-4 py-8">
+                        <Skeleton className="h-12 w-12 rounded-full" />
+                        <p className="text-muted-foreground text-lg">Analyzing your bill...</p>
+                    </div>
+                )}
                 <FormField
                   control={form.control}
                   name="description"
@@ -403,7 +402,7 @@ export function AddTransactionSheet({
                   )}
                 />
             </div>
-            <SheetFooter className="mt-4">
+            <SheetFooter className="mt-auto pt-4">
                 <Button type="submit" disabled={isScanning} className="w-full">{transactionToEdit ? 'Save Changes' : 'Save Transaction'}</Button>
             </SheetFooter>
           </form>
@@ -460,4 +459,3 @@ export function AddTransactionSheet({
   );
 }
 
-    
